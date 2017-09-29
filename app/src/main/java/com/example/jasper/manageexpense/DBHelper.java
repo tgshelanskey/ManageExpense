@@ -17,7 +17,7 @@ import java.util.List;
 
 public class DBHelper extends SQLiteOpenHelper {
 
-    public static final String DATABASE_NAME = "ExpenseManager.db";
+    public static final String DATABASE_NAME = "ExpenseManager.db";  
     public static final String CATEGORY_TABLE_NAME = "Category";
     public static final String CATEGORY_COLUMN_ID = "id";
     public static final String CATEGORY_COLUMN_CATEGORY_NAME = "category_name";
