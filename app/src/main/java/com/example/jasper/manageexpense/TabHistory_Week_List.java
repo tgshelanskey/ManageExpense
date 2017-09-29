@@ -10,13 +10,15 @@ public class TabHistory_Week_List {
     private int amount;
     private String date;
     private String note;
+    private String currency; // pGhale
 
-    public TabHistory_Week_List(int id, String name, int amount, String date, String note) {
+    public TabHistory_Week_List(int id, String name, int amount, String date, String note, String currency) {
         this.id = id;
         this.name = name;
         this.amount = amount;
         this.date = date;
         this.note = note;
+        this.currency = currency; //pGhale
     }
 
     public int getId() {
@@ -58,4 +60,8 @@ public class TabHistory_Week_List {
     public void setNote(String note) {
         this.note = note;
     }
+
+    public String getCurrency(){return currency;} // pGhale
+
+    public void setCurrency(String currency) {this.currency =currency;} //pGhale
 }

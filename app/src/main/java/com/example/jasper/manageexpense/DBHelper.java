@@ -17,7 +17,7 @@ import java.util.List;
 
 public class DBHelper extends SQLiteOpenHelper {
 
-    public static final String DATABASE_NAME = "ExpenseManager.db";  
+    public static final String DATABASE_NAME = "ExpenseManager.db";
     public static final String CATEGORY_TABLE_NAME = "Category";
     public static final String CATEGORY_COLUMN_ID = "id";
     public static final String CATEGORY_COLUMN_CATEGORY_NAME = "category_name";
@@ -30,6 +30,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String EXPENSE_ADD_COLUMN_AMOUNT = "amount";
     public static final String EXPENSE_ADD_COLUMN_DATE = "date";
     public static final String EXPENSE_ADD_COLUMN_NOTE = "note";
+    public static final String EXPENSE_ADD_COLUMN_CURRENCY = "currency"; //pGhale
 
 
     private HashMap hp;
@@ -47,7 +48,7 @@ public class DBHelper extends SQLiteOpenHelper {
         String createTable = "create table Category (id integer primary key AUTOINCREMENT, category_name, budget);";
         db.execSQL(createTable);
 
-        String createTableAdd = "create table Add_Expense (add_id integer primary key AUTOINCREMENT, category_add, amount, date, note);";
+        String createTableAdd = "create table Add_Expense (add_id integer primary key AUTOINCREMENT, category_add, amount, date, note, currency);"; //pghale
         db.execSQL(createTableAdd);
     }
 
@@ -71,7 +72,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     }
 
-    public void insertAdd_Expense(String category_add, String amount, String date, String note) {
+    public void insertAdd_Expense(String category_add, String amount, String date, String note, String currency) { //pghale
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -79,6 +80,7 @@ public class DBHelper extends SQLiteOpenHelper {
         values.put(EXPENSE_ADD_COLUMN_AMOUNT, amount);
         values.put(EXPENSE_ADD_COLUMN_DATE, date);
         values.put(EXPENSE_ADD_COLUMN_NOTE, note);
+        values.put(EXPENSE_ADD_COLUMN_CURRENCY, currency); //pGhale
         db.insert(EXPENSE_TABLE_ADD, null, values);
         db.close();
     }
@@ -146,7 +148,7 @@ public class DBHelper extends SQLiteOpenHelper {
         return true;
     }
 
-    public boolean updateCategoryAdd(Integer id, String category_add, String amount, String date, String note) {
+    public boolean updateCategoryAdd(Integer id, String category_add, String amount, String date, String note, String currency) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(EXPENSE_ADD_COLUMN_ID, id);
@@ -154,6 +156,7 @@ public class DBHelper extends SQLiteOpenHelper {
         contentValues.put(EXPENSE_ADD_COLUMN_AMOUNT, amount);
         contentValues.put(EXPENSE_ADD_COLUMN_DATE, date);
         contentValues.put(EXPENSE_ADD_COLUMN_NOTE, note);
+        // ContentValues.put("currency", currency);
 
         db.update(EXPENSE_TABLE_ADD, contentValues,EXPENSE_ADD_COLUMN_ID+ "=" +id , null );
         return true;
@@ -217,7 +220,7 @@ public class DBHelper extends SQLiteOpenHelper {
         Cursor cursor = db.rawQuery("select * from Add_Expense  ", null);
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
-            sample = new TabHistory_Week_List(cursor.getInt(0), cursor.getString(1), cursor.getInt(2), cursor.getString(3), cursor.getString(4));
+            sample = new TabHistory_Week_List(cursor.getInt(0), cursor.getString(1), cursor.getInt(2), cursor.getString(3), cursor.getString(4), cursor.getString(5)); //pGhale
             sampleList.add(sample);
             cursor.moveToNext();
         }
@@ -272,7 +275,7 @@ public class DBHelper extends SQLiteOpenHelper {
         cursor.moveToFirst();
 
         while (!cursor.isAfterLast()) {
-            tab = new TabHistory_Week_List(cursor.getInt(0), cursor.getString(1), cursor.getInt(2), cursor.getString(3), cursor.getString(4));
+            tab = new TabHistory_Week_List(cursor.getInt(0), cursor.getString(1), cursor.getInt(2), cursor.getString(3), cursor.getString(4), cursor.getString(5)); //pGhale
             listArrayList.add(tab);
             cursor.moveToNext();
         }

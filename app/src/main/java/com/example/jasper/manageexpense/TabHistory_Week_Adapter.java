@@ -53,12 +53,14 @@ public class TabHistory_Week_Adapter extends BaseAdapter{
         TextView txtDate = (TextView)view.findViewById(R.id.tbhw_date);
         TextView txtAmount = (TextView)view.findViewById(R.id.tbhw_amount);
         TextView txtNote = (TextView)view.findViewById(R.id.tbhw_note);
+        TextView txtCurrency = (TextView)view.findViewById(R.id.tbhw_currency);
 
         txtName.setText(listWeek.get(position).getName());
         DecimalFormat precision = new DecimalFormat("0.00");
         txtAmount.setText(precision.format(listWeek.get(position).getAmount()));
         txtDate.setText(listWeek.get(position).getDate());
         txtNote.setText(listWeek.get(position).getNote());
+        txtCurrency.setText(listWeek.get(position).getCurrency());
 
 
         return view;

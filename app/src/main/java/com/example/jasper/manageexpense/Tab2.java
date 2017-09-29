@@ -49,6 +49,7 @@ public class Tab2 extends Activity implements AdapterView.OnItemSelectedListener
     Button buttonCancel;
     Calendar calendar;
     Spinner spinner;
+    Spinner spinnerCurrency; //pGhale
     private int year, month, day;
     final Context context = this;
 
@@ -64,6 +65,9 @@ public class Tab2 extends Activity implements AdapterView.OnItemSelectedListener
         buttonCancel = (Button) findViewById(R.id.btnCancelExpense);
         spinner = (Spinner) findViewById(R.id.list_spinner);
         spinner.setOnItemSelectedListener(this);
+        //populate spinner currency object
+        spinnerCurrency = (Spinner) findViewById(R.id.spinner_unit); //pGhale
+        spinnerCurrency.setOnItemSelectedListener(this);
         loadListView();
 
         calendar = Calendar.getInstance();
@@ -77,33 +81,33 @@ public class Tab2 extends Activity implements AdapterView.OnItemSelectedListener
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
 
         alertDialogBuilder.setView(promptsView);
-            final EditText userInput = (EditText) promptsView
-                    .findViewById(R.id.editTextDialog);
+        final EditText userInput = (EditText) promptsView
+                .findViewById(R.id.editTextDialog);
 
         alertDialogBuilder
                 .setCancelable(false)
                 .
 
-            setPositiveButton("OK",
-                                      new DialogInterface.OnClickListener() {
-                public void onClick (DialogInterface dialog,int id){
-                    amount_add.setText(userInput.getText());
-                }
-            }) .
-                    setNegativeButton("Cancel",
-                                      new DialogInterface.OnClickListener() {
-                public void onClick (DialogInterface dialog,int id){
-                    dialog.cancel();
-                }
-            });
-            AlertDialog alertDialog = alertDialogBuilder.create();
-            alertDialog.show();
+                        setPositiveButton("OK",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        amount_add.setText(userInput.getText());
+                                    }
+                                }).
+                setNegativeButton("Cancel",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
 
         amount_add.setOnClickListener(new View.OnClickListener()
 
-            {
-                @Override
-                public void onClick (View v){
+        {
+            @Override
+            public void onClick(View v) {
                 LayoutInflater li = LayoutInflater.from(context);
                 View promptsView = li.inflate(R.layout.prompts, null);
                 AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
@@ -129,29 +133,48 @@ public class Tab2 extends Activity implements AdapterView.OnItemSelectedListener
                 alertDialog.show();
 
             }
-            });
+        });
         buttonCancel.setOnClickListener(new View.OnClickListener()
 
-            {
-                @Override
-                public void onClick (View v){
+        {
+            @Override
+            public void onClick(View v) {
                 finish();
             }
-            });
+        });
 
         button.setOnClickListener(new View.OnClickListener()
 
-            {
-                @Override
-                public void onClick (View arg0){
+        {
+            @Override
+            public void onClick(View arg0) {
+                if (spinner.getSelectedItem() == null) {
+                    Toast.makeText(getApplicationContext(), "Please Add Category first!", Toast.LENGTH_LONG).show();
+                    return;
+                }
+                if (spinnerCurrency.getSelectedItem() == "") {
+                    Toast.makeText(getApplicationContext(), "Please select the currency first!", Toast.LENGTH_LONG).show(); //pGhale
+                    return;
+                }
+
+
+                //add same chek as above to make sure currency is selected and not null, if null show toast
                 String category_add = spinner.getSelectedItem().toString();
                 String amount = amount_add.getText().toString();
                 String date = date_add.getText().toString();
                 String notes = note.getText().toString();
+                String currency = spinnerCurrency.getSelectedItem().toString(); //pGhale
+
+                if (category_add.length() <= 0) {
+                    Toast.makeText(getApplicationContext(), "Please Add Category first!", Toast.LENGTH_LONG).show();
+                    return;
+                }
+
 
                 if (category_add.trim().length() > 0) {
                     DBHelper db = new DBHelper(getApplicationContext());
-                    db.insertAdd_Expense(category_add, amount, date, notes);
+                    db.insertAdd_Expense(category_add, amount, date, notes, currency);//pghale
+                    List<Edit_expense_List> a = db.getAllExpenses();
 
                     amount_add.setText("");
                     date_add.setText("");
@@ -175,8 +198,8 @@ public class Tab2 extends Activity implements AdapterView.OnItemSelectedListener
                     imm_note.hideSoftInputFromWindow(note.getWindowToken(), 0);
                     Toast.makeText(Tab2.this, "New Expense Added!", Toast.LENGTH_LONG).show();
 
-                 for(int i = 0; i < category_add.length(); i++);
-                    if(category_add == null) {
+                    for (int i = 0; i < category_add.length(); i++) ;
+                    if (category_add == null) {
                         Toast.makeText(getApplicationContext(), "Please Add Category first!", Toast.LENGTH_LONG).show();
                     }
 
@@ -186,7 +209,7 @@ public class Tab2 extends Activity implements AdapterView.OnItemSelectedListener
                 }
 
             }
-            });
+        });
     }
 
     private void loadListView() {
@@ -228,6 +251,7 @@ public class Tab2 extends Activity implements AdapterView.OnItemSelectedListener
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         String label = parent.getItemAtPosition(position).toString();
         spinner.getSelectedItem().toString();
+        spinnerCurrency.getSelectedItem().toString(); //pGhale
         //Toast.makeText(parent.getContext(), "You Selected: " + label, Toast.LENGTH_SHORT).show();
     }
 

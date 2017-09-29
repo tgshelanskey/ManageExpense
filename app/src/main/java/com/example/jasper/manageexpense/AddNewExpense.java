@@ -73,7 +73,7 @@ public class AddNewExpense extends Fragment implements AdapterView.OnItemSelecte
 
             if (category_add.trim().length() > 0) {
                 DBHelper db = new DBHelper(getContext());
-                db.insertAdd_Expense(category_add,amount,date,note);
+                db.insertAdd_Expense(category_add,amount,date,note, "dollar");
 
                 editAmount.setText("");
                 editDate.setText("");

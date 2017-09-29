@@ -106,7 +106,7 @@ public class Update_AddExpense extends Activity{
 
                 int idDelete = listExpense.get(id).getId();
 
-                db.updateCategoryAdd(idDelete, name, amount, date, note);
+                db.updateCategoryAdd(idDelete, name, amount, date, note, "Dollar");
 
                 Toast.makeText(Update_AddExpense.this, "Items Successfully transferred to "+name, Toast.LENGTH_SHORT).show();
                 transferDialog.dismiss();
@@ -180,7 +180,7 @@ public class Update_AddExpense extends Activity{
                 editNote.setText("");
 
                 db.updateCategory(ids, Category_name);
-                db.updateCategoryAdd(ids, Category_name, amount, date, note);
+                db.updateCategoryAdd(ids, Category_name, amount, date, note, "dollar");
                 Toast.makeText(Update_AddExpense.this, "Expense updated!", Toast.LENGTH_SHORT).show();
 
                 loadListView();
