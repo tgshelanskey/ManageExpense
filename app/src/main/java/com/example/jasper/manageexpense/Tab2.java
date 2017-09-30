@@ -215,7 +215,13 @@ public class Tab2 extends Activity implements AdapterView.OnItemSelectedListener
     private void loadListView() {
         DBHelper dbHelper = new DBHelper(getApplicationContext());
         List<String> labels = dbHelper.getAllCategory();
-
+        //shelanskey - fix for not having any categories loaded before entering expenses
+        //TODO This should just be a notification
+        if (labels.size() == 0)
+        {
+            dbHelper.insertCategory("Sample", 0);
+            labels = dbHelper.getAllCategory();
+        }
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, labels);
         dataAdapter.setDropDownViewResource(android.R.layout.simple_list_item_single_choice);
         spinner.setAdapter(dataAdapter);
