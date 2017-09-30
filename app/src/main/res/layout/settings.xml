@@ -67,18 +67,12 @@
                 android:textAllCaps="false"
                 android:textSize="18sp" />
 
-            <EditText
-                android:id="@+id/editText_settings2"
+            <TextView
+                android:id="@+id/textView8"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:ems="10"
-                android:enabled="false"
-                android:hint="GENERAL SETTINGS"
-                android:inputType="textPersonName"
-                android:textAllCaps="false"
-                android:textSize="18sp"
-                android:textStyle="bold" />
+                android:text="General Settings"
+                android:textSize="24sp" />
 
             <Button
                 android:id="@+id/button5"
@@ -96,17 +90,12 @@
                 android:layout_height="wrap_content"
                 android:entries="@array/lists"/>
 
-            <EditText
-                android:id="@+id/editText_settings3"
+            <TextView
+                android:id="@+id/textView9"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:ems="10"
-                android:enabled="false"
-                android:hint="ABOUT DEVELOPER"
-                android:inputType="textPersonName"
-                android:textAllCaps="false"
-                android:textSize="18sp"
-                android:textStyle="bold" />
+                android:text="About Developer"
+                android:textSize="24sp" />
 
         </LinearLayout>
     </ScrollView>
