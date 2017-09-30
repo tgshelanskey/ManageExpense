@@ -81,6 +81,7 @@ public class Tab1 extends Activity {
     public void loadListView(){
         dbHelper = new DBHelper(getApplicationContext());
         listViews = dbHelper.getCategoryName();
+
         tab1_adapter = new Tab1_Adapter(getApplicationContext(), listViews);
         listView.setAdapter(tab1_adapter);
 
