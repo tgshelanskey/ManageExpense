@@ -7,12 +7,12 @@ package com.example.jasper.manageexpense;
 public class TabHistory_Week_List {
     private int id;
     private String name;
-    private int amount;
+    private double amount;
     private String date;
     private String note;
     private String currency; // pGhale
 
-    public TabHistory_Week_List(int id, String name, int amount, String date, String note, String currency) {
+    public TabHistory_Week_List(int id, String name, double amount, String date, String note, String currency) {
         this.id = id;
         this.name = name;
         this.amount = amount;
@@ -37,11 +37,11 @@ public class TabHistory_Week_List {
         this.name = name;
     }
 
-    public int getAmount() {
+    public double getAmount() {
         return amount;
     }
 
-    public void setAmount(int amount) {
+    public void setAmount(double amount) {
         this.amount = amount;
     }
 

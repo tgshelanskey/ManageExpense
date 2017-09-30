@@ -45,19 +45,6 @@
             android:layout_marginTop="5dp"
             android:orientation="vertical">
 
-            <EditText
-                android:id="@+id/editText_settings"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:clickable="false"
-                android:ems="10"
-                android:hint="EXPENSES"
-                android:inputType="textPersonName"
-                android:textAlignment="textStart"
-                android:textAllCaps="true"
-                android:textSize="18sp"
-                android:textStyle="bold" />
-
             <Button
                 android:id="@+id/btn_settings_addCat"
                 style="@style/Widget.AppCompat.Button.Borderless"
@@ -102,6 +89,12 @@
                 android:textAlignment="textStart"
                 android:textAllCaps="false"
                 android:textSize="18sp" />
+
+            <Spinner
+                android:id="@+id/spinnerPreferredCurrency"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:entries="@array/lists"/>
 
             <EditText
                 android:id="@+id/editText_settings3"

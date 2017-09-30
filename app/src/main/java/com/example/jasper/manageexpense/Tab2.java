@@ -28,6 +28,8 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.example.com.example.utilities.CurrencyHandler;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -65,9 +67,14 @@ public class Tab2 extends Activity implements AdapterView.OnItemSelectedListener
         buttonCancel = (Button) findViewById(R.id.btnCancelExpense);
         spinner = (Spinner) findViewById(R.id.list_spinner);
         spinner.setOnItemSelectedListener(this);
+
         //populate spinner currency object
+        DBHelper dbHelper = new DBHelper(getApplicationContext());
+        String currencyType = dbHelper.getSetting("CURRENCY");
+        int preferredCurrency = CurrencyHandler.lookupPosition(currencyType);
         spinnerCurrency = (Spinner) findViewById(R.id.spinner_unit); //pGhale
         spinnerCurrency.setOnItemSelectedListener(this);
+        spinnerCurrency.setSelection(preferredCurrency);
         loadListView();
 
         calendar = Calendar.getInstance();
@@ -160,7 +167,7 @@ public class Tab2 extends Activity implements AdapterView.OnItemSelectedListener
 
                 //add same chek as above to make sure currency is selected and not null, if null show toast
                 String category_add = spinner.getSelectedItem().toString();
-                String amount = amount_add.getText().toString();
+                Double amount = new Double(amount_add.getText().toString());
                 String date = date_add.getText().toString();
                 String notes = note.getText().toString();
                 String currency = spinnerCurrency.getSelectedItem().toString(); //pGhale
@@ -215,13 +222,14 @@ public class Tab2 extends Activity implements AdapterView.OnItemSelectedListener
     private void loadListView() {
         DBHelper dbHelper = new DBHelper(getApplicationContext());
         List<String> labels = dbHelper.getAllCategory();
-        //shelanskey - fix for not having any categories loaded before entering expenses
+        //shelanskey US3 - fix for not having any categories loaded before entering expenses
         //TODO This should just be a notification
         if (labels.size() == 0)
         {
             dbHelper.insertCategory("Sample", 0);
             labels = dbHelper.getAllCategory();
         }
+
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, labels);
         dataAdapter.setDropDownViewResource(android.R.layout.simple_list_item_single_choice);
         spinner.setAdapter(dataAdapter);

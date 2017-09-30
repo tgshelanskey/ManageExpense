@@ -17,10 +17,12 @@ import java.util.List;
 public class Overview_List_Adapter extends BaseAdapter {
     Context context;
     List<Overview_ListView> listOverview;
+    String currencyType;
 
-    public Overview_List_Adapter(Context context, List<Overview_ListView> listOverview){
+    public Overview_List_Adapter(Context context, List<Overview_ListView> listOverview, String currencyType){
         this.context = context;
         this.listOverview = listOverview;
+        this.currencyType = currencyType;
     }
     @Override
     public int getCount() {
@@ -47,7 +49,7 @@ public class Overview_List_Adapter extends BaseAdapter {
 
         txtName.setText(listOverview.get(position).getName());
         DecimalFormat precision = new DecimalFormat("0.00");
-        txtAmount.setText(precision.format(listOverview.get(position).getAmount()) + " Php");
+        txtAmount.setText(precision.format(listOverview.get(position).getAmount()) + " " + currencyType);
         progressBar.setProgress(txtAmount.getAutoLinkMask());
         progressBar.setProgress(0);
         progressBar.setMax(100);

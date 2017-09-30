@@ -7,12 +7,12 @@ package com.example.jasper.manageexpense;
 public class Overview_ListView {
     private int id;
     private String name;
-    private int amount;
+    private double amount;
     private String date;
     private String note;
 
 
-    public Overview_ListView (int id, String name, int amount, String date, String note){
+    public Overview_ListView (int id, String name, double amount, String date, String note){
         this.id = id;
         this.name = name;
         this.amount = amount;
@@ -38,11 +38,11 @@ public class Overview_ListView {
         this.name = name;
     }
 
-    public int getAmount() {
+    public double getAmount() {
         return amount;
     }
 
-    public void setAmount(int amount) {
+    public void setAmount(double amount) {
         this.amount = amount;
     }
 

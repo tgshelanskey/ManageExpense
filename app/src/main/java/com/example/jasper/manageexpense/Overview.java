@@ -11,6 +11,8 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.com.example.utilities.CurrencyHandler;
+
 import java.text.DecimalFormat;
 import java.util.List;
 
@@ -41,22 +43,24 @@ public class Overview extends Fragment{
         getTotal();
 
         DBHelper db = new DBHelper(getContext());
+        String currencyType = db.getSetting("CURRENCY");
         listOverview = db.getOverviewList();
-        adapterOverview = new Overview_List_Adapter(getContext(), listOverview);
+        adapterOverview = new Overview_List_Adapter(getContext(), listOverview, currencyType);
         listView.setAdapter(adapterOverview);
         return view;
     }
 
     public Cursor getTotal() {
         DBHelper db = new DBHelper(getContext());
+        String currencyType = db.getSetting("CURRENCY");
         SQLiteDatabase sql = db.getReadableDatabase();
         String query = "SELECT SUM(amount) AS total FROM Add_Expense";
         Cursor c = sql.rawQuery(query, null);
         c.moveToFirst();
         c.getInt(0);
 
-        DecimalFormat precision = new DecimalFormat("0.00 Php");
-        total.setText(precision.format(c.getInt(0)));
+        DecimalFormat precision = new DecimalFormat("0.00");
+        total.setText(precision.format(CurrencyHandler.convertToNative(currencyType, c.getDouble(0))) + " " + currencyType);
         return c;
     }
 

@@ -48,6 +48,7 @@ public class AddNewExpense extends Fragment implements AdapterView.OnItemSelecte
         listView = (ListView)view.findViewById(R.id.listCategory);
         DBHelper dbHelper = new DBHelper(getContext());
         List<String> labels = dbHelper.getAllCategory();
+        final String currencyType = dbHelper.getSetting("CURRENCY");
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_single_choice, labels);
         listView.setAdapter(dataAdapter);
 
@@ -69,7 +70,7 @@ public class AddNewExpense extends Fragment implements AdapterView.OnItemSelecte
         @Override
         public void onClick(View arg0) {
             String category_add = listView.getSelectedItem().toString();
-            String amount = editAmount.getText().toString();
+            Double amount = new Double(editAmount.getText().toString());
             String date = editDate.getText().toString();
             String note = editNote.getText().toString();
             //String currency = listView.getSelectedItem().toString();
@@ -77,7 +78,7 @@ public class AddNewExpense extends Fragment implements AdapterView.OnItemSelecte
 
             if (category_add.trim().length() > 0) {
                 DBHelper db = new DBHelper(getContext());
-                db.insertAdd_Expense(category_add,amount,date,note, "dollar");
+                db.insertAdd_Expense(category_add,amount,date,note, currencyType);
 
                 editAmount.setText("");
                 editDate.setText("");

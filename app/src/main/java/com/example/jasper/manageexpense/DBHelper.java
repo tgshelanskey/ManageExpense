@@ -7,6 +7,9 @@ import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.example.com.example.utilities.CurrencyHandler;
+import com.example.dataObject.Setting;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -21,6 +24,8 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String CATEGORY_TABLE_NAME = "Category";
     public static final String CATEGORY_COLUMN_ID = "id";
     public static final String CATEGORY_COLUMN_CATEGORY_NAME = "category_name";
+
+    //shelanskey US1 - Add max budget columm
     public static final String CATEGORY_COLUMN_BUDGET_NAME = "budget";
     //public static final String EXPENSE_COLUMN_CATEGORY_IDENTIFIER = "identifier";
 
@@ -31,6 +36,12 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String EXPENSE_ADD_COLUMN_DATE = "date";
     public static final String EXPENSE_ADD_COLUMN_NOTE = "note";
     public static final String EXPENSE_ADD_COLUMN_CURRENCY = "currency"; //pGhale
+
+    //shelanskey US4 - add settings table
+    public static final String SETTINGS_TABLE_NAME = "settings";
+    public static final String SETTINGS_COLUMN_ID = "id";
+    public static final String SETTINGS_COLUMN_KEY = "key";
+    public static final String SETTINGS_COLUMN_VALUE = "value";
 
 
     private HashMap hp;
@@ -48,15 +59,23 @@ public class DBHelper extends SQLiteOpenHelper {
         String createTable = "create table Category (id integer primary key AUTOINCREMENT, category_name, budget);";
         db.execSQL(createTable);
 
-        String createTableAdd = "create table Add_Expense (add_id integer primary key AUTOINCREMENT, category_add, amount, date, note, currency);"; //pghale
+        String createTableAdd = "create table Add_Expense (add_id integer primary key AUTOINCREMENT, category_add, amount double, date, note, currency);"; //pghale
         db.execSQL(createTableAdd);
+
+        String createTableSettings = "create table " + SETTINGS_TABLE_NAME + " (" + SETTINGS_COLUMN_ID + " integer primary key AUTOINCREMENT, " +
+                SETTINGS_COLUMN_KEY + ", " +  SETTINGS_COLUMN_VALUE + " );";
+        db.execSQL(createTableSettings);
+
+        String insertDefaultSettings = "INSERT INTO " + SETTINGS_TABLE_NAME + "(" +SETTINGS_COLUMN_KEY + ", " + SETTINGS_COLUMN_VALUE + ") VALUES ('CURRENCY', 'Dollar')";
+        db.execSQL(insertDefaultSettings);
     }
+
+
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS!");
         onCreate(db);
-
     }
 
     public void insertCategory(String category_name, Integer budgetAmount) {
@@ -72,12 +91,12 @@ public class DBHelper extends SQLiteOpenHelper {
 
     }
 
-    public void insertAdd_Expense(String category_add, String amount, String date, String note, String currency) { //pghale
+    public void insertAdd_Expense(String category_add, Double amount, String date, String note, String currency) { //pghale
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
         values.put(EXPENSE_ADD_COLUMN_CATEGORY_ADD, category_add);
-        values.put(EXPENSE_ADD_COLUMN_AMOUNT, amount);
+        values.put(EXPENSE_ADD_COLUMN_AMOUNT, CurrencyHandler.convertToDollars(currency ,amount));
         values.put(EXPENSE_ADD_COLUMN_DATE, date);
         values.put(EXPENSE_ADD_COLUMN_NOTE, note);
         values.put(EXPENSE_ADD_COLUMN_CURRENCY, currency); //pGhale
@@ -148,12 +167,12 @@ public class DBHelper extends SQLiteOpenHelper {
         return true;
     }
 
-    public boolean updateCategoryAdd(Integer id, String category_add, String amount, String date, String note, String currency) {
+    public boolean updateCategoryAdd(Integer id, String category_add, Double amount, String date, String note, String currency) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(EXPENSE_ADD_COLUMN_ID, id);
         contentValues.put(EXPENSE_ADD_COLUMN_CATEGORY_ADD, category_add);
-        contentValues.put(EXPENSE_ADD_COLUMN_AMOUNT, amount);
+        contentValues.put(EXPENSE_ADD_COLUMN_AMOUNT, CurrencyHandler.convertToDollars(currency ,amount));
         contentValues.put(EXPENSE_ADD_COLUMN_DATE, date);
         contentValues.put(EXPENSE_ADD_COLUMN_NOTE, note);
         // ContentValues.put("currency", currency);
@@ -193,6 +212,7 @@ public class DBHelper extends SQLiteOpenHelper {
     }
     public List<Overview_ListView> getOverviewList() {
         Overview_ListView overList = null;
+        String currencyType = getSetting("CURRENCY");
 
         List<Overview_ListView> listOverview = new ArrayList<>();
         hp = new HashMap();
@@ -200,7 +220,7 @@ public class DBHelper extends SQLiteOpenHelper {
         Cursor cursor = db.rawQuery("SELECT category_add, date, note,  SUM(amount) AS total  FROM Add_Expense  Group by category_add ORDER by date desc ", null);
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
-            overList = new Overview_ListView(cursor.getInt(0), cursor.getString(cursor.getColumnIndexOrThrow("category_add")), cursor.getInt(cursor.getColumnIndexOrThrow("total")),
+            overList = new Overview_ListView(cursor.getInt(0), cursor.getString(cursor.getColumnIndexOrThrow("category_add")), CurrencyHandler.convertToNative(currencyType, cursor.getDouble(cursor.getColumnIndexOrThrow("total"))),
                      cursor.getString(cursor.getColumnIndexOrThrow("date")), cursor.getString(cursor.getColumnIndexOrThrow("note")));
             listOverview.add(overList);
             cursor.moveToNext();
@@ -212,6 +232,7 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     public List<TabHistory_Week_List> getHistoryWeek() {
+        String currencyType = getSetting("CURRENCY");
         TabHistory_Week_List sample = null;
 
         List<TabHistory_Week_List> sampleList = new ArrayList<>();
@@ -220,7 +241,8 @@ public class DBHelper extends SQLiteOpenHelper {
         Cursor cursor = db.rawQuery("select * from Add_Expense  ", null);
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
-            sample = new TabHistory_Week_List(cursor.getInt(0), cursor.getString(1), cursor.getInt(2), cursor.getString(3), cursor.getString(4), cursor.getString(5)); //pGhale
+            sample = new TabHistory_Week_List(cursor.getInt(0), cursor.getString(1), cursor.getDouble(2), cursor.getString(3), cursor.getString(4), cursor.getString(5)); //pGhale
+            sample.setAmount(CurrencyHandler.convertToNative(currencyType, sample.getAmount()));
             sampleList.add(sample);
             cursor.moveToNext();
         }
@@ -322,4 +344,61 @@ public class DBHelper extends SQLiteOpenHelper {
         db.close();
         return listOverview;
     }
+
+    //shelanskey US4 - method for inserting new values into the settings table
+    public void insertSetting(String setting_name, String setting_value) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(SETTINGS_COLUMN_KEY, setting_name);//column name, column value
+        values.put(SETTINGS_COLUMN_VALUE, setting_value);
+
+        // Inserting Row
+        db.insert(SETTINGS_TABLE_NAME, null, values);//tableName, nullColumnHack, ContentValues
+        db.close(); // Closing database connection
+    }
+
+    //shelanskey US4 - method for updating settings value
+    public boolean updateSetting(String setting_name, String setting_value) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+
+        contentValues.put(SETTINGS_COLUMN_VALUE, setting_value);
+
+        db.update(SETTINGS_TABLE_NAME, contentValues, SETTINGS_COLUMN_KEY + "=?", new String[] {setting_name});
+        return true;
+    }
+
+    public List<com.example.dataObject.Setting> getAllSettings() {
+        List<Setting> listArray = new ArrayList<>();
+        Setting setting;
+        hp = new HashMap();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT *  FROM " + SETTINGS_TABLE_NAME, null);
+        cursor.moveToFirst();
+
+        while (!cursor.isAfterLast()) {
+            setting = new Setting(cursor.getInt(0), cursor.getString(1), cursor.getString(2));
+            listArray.add(setting);
+            cursor.moveToNext();
+        }
+        cursor.close();
+        db.close();
+
+        return listArray;
+    }
+
+    public String getSetting(String setting_name) {
+        Setting setting;
+        hp = new HashMap();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT *  FROM " + SETTINGS_TABLE_NAME + " where " + SETTINGS_COLUMN_KEY + "=?", new String[] {setting_name});
+        cursor.moveToFirst();
+        setting = new Setting(cursor.getInt(0), cursor.getString(1), cursor.getString(2));
+        cursor.close();
+        db.close();
+
+        return setting.getSetting_value();
+    }
+
 }

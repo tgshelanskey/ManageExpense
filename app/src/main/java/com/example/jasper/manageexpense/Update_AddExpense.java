@@ -100,7 +100,7 @@ public class Update_AddExpense extends Activity{
             public void onClick(View v) {
                 DBHelper db = new DBHelper(getApplicationContext());
                 String name = spinner.getSelectedItem().toString();
-                String amount = txtAmount.getText().toString();
+                Double amount = new Double(txtAmount.getText().toString());
                 String date = txtDate.getText().toString();
                 String note = txtNote.getText().toString();
 
@@ -171,7 +171,7 @@ public class Update_AddExpense extends Activity{
                 adapter.notifyDataSetChanged();
 
                 String Category_name = editText.getText().toString();
-                String amount = editAmount.getText().toString();
+                Double amount = new Double(editAmount.getText().toString());
                 String date = editDate.getText().toString();
                 String note = editNote.getText().toString();
                 editText.setText("");
