@@ -17,6 +17,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import java.util.Calendar;
@@ -29,6 +30,7 @@ public class AddNewExpense extends Fragment implements AdapterView.OnItemSelecte
     ListView listView;
     Button btnSave, btnCancel;
     EditText editAmount, editDate, editNote;
+    //Spinner spinner_unit;
     Calendar calendar;
     private int year, month, day;
 
@@ -60,6 +62,7 @@ public class AddNewExpense extends Fragment implements AdapterView.OnItemSelecte
         editNote = (EditText)view.findViewById(R.id.editNote);
         btnCancel = (Button)view.findViewById(R.id.btnCancel);
         btnSave = (Button)view.findViewById(R.id.btnSave);
+        //spinner_unit = (Spinner)view.findViewById(R.id.spinner_unit);
 
         btnSave.setOnClickListener(new View.OnClickListener() {
 
@@ -69,6 +72,7 @@ public class AddNewExpense extends Fragment implements AdapterView.OnItemSelecte
             String amount = editAmount.getText().toString();
             String date = editDate.getText().toString();
             String note = editNote.getText().toString();
+            //String currency = listView.getSelectedItem().toString();
 
 
             if (category_add.trim().length() > 0) {
