@@ -27,7 +27,7 @@ import java.util.List;
 
 public class Setting extends Activity implements AdapterView.OnItemSelectedListener{
     RelativeLayout relativeLayout;
-    Spinner spinnerCurrency;
+    Spinner spinnerCurrency; // pGhale: declaring spinner variable spinnerCurrency
 
     @Override
     public void onCreate(Bundle savedInstanceState)  {
@@ -37,7 +37,7 @@ public class Setting extends Activity implements AdapterView.OnItemSelectedListe
         DBHelper dbHelper = new DBHelper(getApplicationContext());
         String currencyType = dbHelper.getSetting("CURRENCY");
         int preferredCurrency = CurrencyHandler.lookupPosition(currencyType);
-        spinnerCurrency = (Spinner) findViewById(R.id.spinnerPreferredCurrency); //pGhale
+        spinnerCurrency = (Spinner) findViewById(R.id.spinnerPreferredCurrency); //pGhale : setting the spinnerCurrency object from view
         spinnerCurrency.setOnItemSelectedListener(this);
         spinnerCurrency.setSelection(preferredCurrency);
 
@@ -70,14 +70,14 @@ public class Setting extends Activity implements AdapterView.OnItemSelectedListe
             }
         });
 
-        String currency = spinnerCurrency.getSelectedItem().toString(); //pGhale
+        String currency = spinnerCurrency.getSelectedItem().toString(); //pGhale : getting the current selected currency
     }
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         DBHelper dbHelper = new DBHelper(getApplicationContext());
         String label = parent.getItemAtPosition(position).toString();
-        String currencyType = spinnerCurrency.getSelectedItem().toString(); //pGhale
+        String currencyType = spinnerCurrency.getSelectedItem().toString(); //pGhale : getting the current selected currency
         dbHelper.updateSetting("CURRENCY", currencyType);
         Toast.makeText(parent.getContext(), "Selected Currency: " + currencyType + " ", Toast.LENGTH_LONG).show();
     }

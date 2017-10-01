@@ -61,7 +61,7 @@ public class TabHistory_Week_List {
         this.note = note;
     }
 
-    public String getCurrency(){return currency;} // pGhale
+    public String getCurrency(){return currency;} // pGhale: creating a method getCurrency
 
-    public void setCurrency(String currency) {this.currency =currency;} //pGhale
+    public void setCurrency(String currency) {this.currency =currency;} //pGhale: creating method setCurrency
 }

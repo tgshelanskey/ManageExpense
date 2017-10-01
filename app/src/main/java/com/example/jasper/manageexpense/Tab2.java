@@ -51,7 +51,7 @@ public class Tab2 extends Activity implements AdapterView.OnItemSelectedListener
     Button buttonCancel;
     Calendar calendar;
     Spinner spinner;
-    Spinner spinnerCurrency; //pGhale
+    Spinner spinnerCurrency; //pGhale : declaring spinner variable spinnercurrency
     private int year, month, day;
     final Context context = this;
 
@@ -170,7 +170,7 @@ public class Tab2 extends Activity implements AdapterView.OnItemSelectedListener
                 Double amount = new Double(amount_add.getText().toString());
                 String date = date_add.getText().toString();
                 String notes = note.getText().toString();
-                String currency = spinnerCurrency.getSelectedItem().toString(); //pGhale
+                String currency = spinnerCurrency.getSelectedItem().toString(); //pGhale: getting the current selected currency
 
                 if (category_add.length() <= 0) {
                     Toast.makeText(getApplicationContext(), "Please Add Category first!", Toast.LENGTH_LONG).show();
@@ -180,7 +180,7 @@ public class Tab2 extends Activity implements AdapterView.OnItemSelectedListener
 
                 if (category_add.trim().length() > 0) {
                     DBHelper db = new DBHelper(getApplicationContext());
-                    db.insertAdd_Expense(category_add, amount, date, notes, currency);//pghale
+                    db.insertAdd_Expense(category_add, amount, date, notes, currency);//pghale: adding currency column to the Add_Expense table
                     List<Edit_expense_List> a = db.getAllExpenses();
 
                     amount_add.setText("");
