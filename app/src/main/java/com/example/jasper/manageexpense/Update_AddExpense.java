@@ -166,11 +166,13 @@ public class Update_AddExpense extends Activity{
             @Override
             public void onClick(View v) {
                 DBHelper db = new DBHelper(getApplicationContext());
+                String currencyType = db.getSetting("CURRENCY");
 
                 int ids = listExpense.get(id).getId();
                 adapter.notifyDataSetChanged();
 
                 String Category_name = editText.getText().toString();
+                //Shelanskey US5 concert values to double
                 Double amount = new Double(editAmount.getText().toString());
                 String date = editDate.getText().toString();
                 String note = editNote.getText().toString();
@@ -180,7 +182,7 @@ public class Update_AddExpense extends Activity{
                 editNote.setText("");
 
                 db.updateCategory(ids, Category_name);
-                db.updateCategoryAdd(ids, Category_name, amount, date, note, "dollar");
+                db.updateCategoryAdd(ids, Category_name, amount, date, note, currencyType);
                 Toast.makeText(Update_AddExpense.this, "Expense updated!", Toast.LENGTH_SHORT).show();
 
                 loadListView();

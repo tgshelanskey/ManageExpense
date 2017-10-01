@@ -113,8 +113,9 @@ public class Tab1 extends Activity {
                 tab1_adapter.notifyDataSetChanged();
 
                 String category_name = editName.getText().toString();
+
+                //Shelanskey US2 - Get budget value and convert to integer
                 Integer budget = new Integer(editBudget.getText().toString());
-                System.out.println("Budget: " + budget);
                 editName.setText("");
                 editBudget.setText("");
                 db.updateCategory(ids, category_name, budget);

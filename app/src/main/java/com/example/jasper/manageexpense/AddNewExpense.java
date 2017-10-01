@@ -48,7 +48,10 @@ public class AddNewExpense extends Fragment implements AdapterView.OnItemSelecte
         listView = (ListView)view.findViewById(R.id.listCategory);
         DBHelper dbHelper = new DBHelper(getContext());
         List<String> labels = dbHelper.getAllCategory();
+
+        //shelanskey US4 - get new currency setting from database
         final String currencyType = dbHelper.getSetting("CURRENCY");
+
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_single_choice, labels);
         listView.setAdapter(dataAdapter);
 
@@ -63,26 +66,27 @@ public class AddNewExpense extends Fragment implements AdapterView.OnItemSelecte
         editNote = (EditText)view.findViewById(R.id.editNote);
         btnCancel = (Button)view.findViewById(R.id.btnCancel);
         btnSave = (Button)view.findViewById(R.id.btnSave);
-        //spinner_unit = (Spinner)view.findViewById(R.id.spinner_unit);
+
 
         btnSave.setOnClickListener(new View.OnClickListener() {
 
         @Override
         public void onClick(View arg0) {
             String category_add = listView.getSelectedItem().toString();
+
+            //shelanskey US5 - convert amount to double
             Double amount = new Double(editAmount.getText().toString());
+
             String date = editDate.getText().toString();
             String note = editNote.getText().toString();
-            //String currency = listView.getSelectedItem().toString();
-
 
             if (category_add.trim().length() > 0) {
                 DBHelper db = new DBHelper(getContext());
+
                 db.insertAdd_Expense(category_add,amount,date,note, currencyType);
 
                 editAmount.setText("");
                 editDate.setText("");
-               // editNote.setText("");
 
                 InputMethodManager imm = (InputMethodManager)
                        getContext().getSystemService(Context.INPUT_METHOD_SERVICE);

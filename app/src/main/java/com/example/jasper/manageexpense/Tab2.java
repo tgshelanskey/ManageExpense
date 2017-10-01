@@ -51,7 +51,8 @@ public class Tab2 extends Activity implements AdapterView.OnItemSelectedListener
     Button buttonCancel;
     Calendar calendar;
     Spinner spinner;
-    Spinner spinnerCurrency; //pGhale : declaring spinner variable spinnercurrency
+    //pGhale US6 : declaring spinner variable spinnercurrency
+    Spinner spinnerCurrency;
     private int year, month, day;
     final Context context = this;
 
@@ -69,9 +70,11 @@ public class Tab2 extends Activity implements AdapterView.OnItemSelectedListener
         spinner.setOnItemSelectedListener(this);
 
         //populate spinner currency object
+        //shelanskey, ghale US4, US6 Create currency selector and set its default value
         DBHelper dbHelper = new DBHelper(getApplicationContext());
         String currencyType = dbHelper.getSetting("CURRENCY");
         int preferredCurrency = CurrencyHandler.lookupPosition(currencyType);
+
         spinnerCurrency = (Spinner) findViewById(R.id.spinner_unit); //pGhale
         spinnerCurrency.setOnItemSelectedListener(this);
         spinnerCurrency.setSelection(preferredCurrency);
@@ -170,7 +173,8 @@ public class Tab2 extends Activity implements AdapterView.OnItemSelectedListener
                 Double amount = new Double(amount_add.getText().toString());
                 String date = date_add.getText().toString();
                 String notes = note.getText().toString();
-                String currency = spinnerCurrency.getSelectedItem().toString(); //pGhale: getting the current selected currency
+                //pGhale US6: getting the current selected currency
+                String currency = spinnerCurrency.getSelectedItem().toString();
 
                 if (category_add.length() <= 0) {
                     Toast.makeText(getApplicationContext(), "Please Add Category first!", Toast.LENGTH_LONG).show();
@@ -180,6 +184,7 @@ public class Tab2 extends Activity implements AdapterView.OnItemSelectedListener
 
                 if (category_add.trim().length() > 0) {
                     DBHelper db = new DBHelper(getApplicationContext());
+                    //pghale US6: adding currency column to the Add_Expense table
                     db.insertAdd_Expense(category_add, amount, date, notes, currency);//pghale: adding currency column to the Add_Expense table
                     List<Edit_expense_List> a = db.getAllExpenses();
 
@@ -265,7 +270,9 @@ public class Tab2 extends Activity implements AdapterView.OnItemSelectedListener
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         String label = parent.getItemAtPosition(position).toString();
         spinner.getSelectedItem().toString();
-        spinnerCurrency.getSelectedItem().toString(); //pGhale
+
+        //pGhale US6: getting the current selected currency
+        spinnerCurrency.getSelectedItem().toString();
         //Toast.makeText(parent.getContext(), "You Selected: " + label, Toast.LENGTH_SHORT).show();
     }
 

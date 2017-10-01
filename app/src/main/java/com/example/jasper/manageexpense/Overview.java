@@ -42,6 +42,7 @@ public class Overview extends Fragment{
         total = (TextView)view.findViewById(R.id.txtAmountOverview);
         getTotal();
 
+        //shelanskey, ghale US4, US6 pass currency defaults to adapter
         DBHelper db = new DBHelper(getContext());
         String currencyType = db.getSetting("CURRENCY");
         listOverview = db.getOverviewList();
@@ -51,6 +52,7 @@ public class Overview extends Fragment{
     }
 
     public Cursor getTotal() {
+        //shelanskey, ghale US4, US6 pass currency defaults to adapter
         DBHelper db = new DBHelper(getContext());
         String currencyType = db.getSetting("CURRENCY");
         SQLiteDatabase sql = db.getReadableDatabase();

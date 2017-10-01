@@ -27,17 +27,20 @@ import java.util.List;
 
 public class Setting extends Activity implements AdapterView.OnItemSelectedListener{
     RelativeLayout relativeLayout;
-    Spinner spinnerCurrency; // pGhale: declaring spinner variable spinnerCurrency
+
+    // pGhale US6: declaring spinner variable spinnerCurrency
+    Spinner spinnerCurrency;
 
     @Override
     public void onCreate(Bundle savedInstanceState)  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.settings);
 
+        //shelanskey, ghale US4, US6 Create currency selector and set its default value
         DBHelper dbHelper = new DBHelper(getApplicationContext());
         String currencyType = dbHelper.getSetting("CURRENCY");
         int preferredCurrency = CurrencyHandler.lookupPosition(currencyType);
-        spinnerCurrency = (Spinner) findViewById(R.id.spinnerPreferredCurrency); //pGhale : setting the spinnerCurrency object from view
+        spinnerCurrency = (Spinner) findViewById(R.id.spinnerPreferredCurrency);
         spinnerCurrency.setOnItemSelectedListener(this);
         spinnerCurrency.setSelection(preferredCurrency);
 
@@ -70,6 +73,7 @@ public class Setting extends Activity implements AdapterView.OnItemSelectedListe
             }
         });
 
+        //pGhale US6: getting the current selected currency
         String currency = spinnerCurrency.getSelectedItem().toString(); //pGhale : getting the current selected currency
     }
 
@@ -77,7 +81,9 @@ public class Setting extends Activity implements AdapterView.OnItemSelectedListe
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         DBHelper dbHelper = new DBHelper(getApplicationContext());
         String label = parent.getItemAtPosition(position).toString();
-        String currencyType = spinnerCurrency.getSelectedItem().toString(); //pGhale : getting the current selected currency
+
+        //pGhale US6 : getting the current selected currency
+        String currencyType = spinnerCurrency.getSelectedItem().toString();
         dbHelper.updateSetting("CURRENCY", currencyType);
         Toast.makeText(parent.getContext(), "Selected Currency: " + currencyType + " ", Toast.LENGTH_LONG).show();
     }

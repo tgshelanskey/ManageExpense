@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -43,7 +44,8 @@
             android:layout_height="wrap_content"
             android:layout_margin="3dp"
             android:layout_marginTop="5dp"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:weightSum="1">
 
             <Button
                 android:id="@+id/btn_settings_addCat"
@@ -88,7 +90,7 @@
                 android:id="@+id/spinnerPreferredCurrency"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:entries="@array/lists"/>
+                android:entries="@array/lists" />
 
             <TextView
                 android:id="@+id/textView9"
@@ -96,6 +98,47 @@
                 android:layout_height="wrap_content"
                 android:text="About Developer"
                 android:textSize="24sp" />
+
+            <TextView
+                android:id="@+id/textView15"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="22.75"
+                android:text="Original Code from sourcecodetester.com" />
+
+            <TextView
+                android:id="@+id/textView19"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Code Modified By:" />
+
+            <TextView
+                android:id="@+id/textView22"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="       Pushpa Ghale" />
+
+            <TextView
+                android:id="@+id/textView21"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="       Tracy Shelanskey" />
+
+            <TextView
+                android:id="@+id/textView23"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="In Support of CIS622 Group 3 Project" />
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:adjustViewBounds="true"
+                android:cropToPadding="true"
+                android:scaleType="fitXY"
+                android:visibility="visible"
+                android:src="@drawable/changelog" />
 
         </LinearLayout>
     </ScrollView>

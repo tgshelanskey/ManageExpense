@@ -48,6 +48,8 @@ public class Overview_List_Adapter extends BaseAdapter {
         ProgressBar progressBar = (ProgressBar)view.findViewById(R.id.progressBar);
 
         txtName.setText(listOverview.get(position).getName());
+
+        //shelanskey, ghale US4, US6 deisplay correct currency type
         DecimalFormat precision = new DecimalFormat("0.00");
         txtAmount.setText(precision.format(listOverview.get(position).getAmount()) + " " + currencyType);
         progressBar.setProgress(txtAmount.getAutoLinkMask());

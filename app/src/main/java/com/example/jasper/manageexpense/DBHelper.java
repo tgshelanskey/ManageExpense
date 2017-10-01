@@ -27,6 +27,8 @@ public class DBHelper extends SQLiteOpenHelper {
 
     //shelanskey US1 - Add max budget columm
     public static final String CATEGORY_COLUMN_BUDGET_NAME = "budget";
+
+    //Removed because makes no sense
     //public static final String EXPENSE_COLUMN_CATEGORY_IDENTIFIER = "identifier";
 
     public static final String EXPENSE_TABLE_ADD = "Add_Expense";
@@ -35,9 +37,11 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String EXPENSE_ADD_COLUMN_AMOUNT = "amount";
     public static final String EXPENSE_ADD_COLUMN_DATE = "date";
     public static final String EXPENSE_ADD_COLUMN_NOTE = "note";
-    public static final String EXPENSE_ADD_COLUMN_CURRENCY = "currency"; //PGhale: Added column for currency  Add_expense table
 
-    // US4 - add settings table
+    //PGhale US7: Added column for currency  Add_expense table
+    public static final String EXPENSE_ADD_COLUMN_CURRENCY = "currency";
+
+    // Shelanskey US4 - add settings table
     public static final String SETTINGS_TABLE_NAME = "settings";
     public static final String SETTINGS_COLUMN_ID = "id";
     public static final String SETTINGS_COLUMN_KEY = "key";
@@ -56,16 +60,20 @@ public class DBHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
 
+        //Shelanskey US1 - added budget column to store max budget value
         String createTable = "create table Category (id integer primary key AUTOINCREMENT, category_name, budget);";
         db.execSQL(createTable);
 
-        String createTableAdd = "create table Add_Expense (add_id integer primary key AUTOINCREMENT, category_add, amount double, date, note, currency);"; //pghale: Added currency column in Expense table
+        //pghale US7: Added currency column in Expense table
+        String createTableAdd = "create table Add_Expense (add_id integer primary key AUTOINCREMENT, category_add, amount double, date, note, currency);";
         db.execSQL(createTableAdd);
 
+        //Shelanskey US4 - adding table creates for new settings table
         String createTableSettings = "create table " + SETTINGS_TABLE_NAME + " (" + SETTINGS_COLUMN_ID + " integer primary key AUTOINCREMENT, " +
                 SETTINGS_COLUMN_KEY + ", " +  SETTINGS_COLUMN_VALUE + " );";
         db.execSQL(createTableSettings);
 
+        //Shelanksey US4 - ensuring that the application starts with a default setting for CURRENCY
         String insertDefaultSettings = "INSERT INTO " + SETTINGS_TABLE_NAME + "(" +SETTINGS_COLUMN_KEY + ", " + SETTINGS_COLUMN_VALUE + ") VALUES ('CURRENCY', 'Dollar')";
         db.execSQL(insertDefaultSettings);
     }
@@ -83,6 +91,8 @@ public class DBHelper extends SQLiteOpenHelper {
 
         ContentValues values = new ContentValues();
         values.put(CATEGORY_COLUMN_CATEGORY_NAME, category_name);//column name, column value
+
+        //Shelanskey US1 - added budget column need to store new value
         values.put(CATEGORY_COLUMN_BUDGET_NAME, budgetAmount);
 
         // Inserting Row
@@ -99,7 +109,9 @@ public class DBHelper extends SQLiteOpenHelper {
         values.put(EXPENSE_ADD_COLUMN_AMOUNT, CurrencyHandler.convertToDollars(currency ,amount));
         values.put(EXPENSE_ADD_COLUMN_DATE, date);
         values.put(EXPENSE_ADD_COLUMN_NOTE, note);
-        values.put(EXPENSE_ADD_COLUMN_CURRENCY, currency); //pGhale: It inserts currency data in currency column
+
+        //pGhale US7: It inserts currency data in currency column
+        values.put(EXPENSE_ADD_COLUMN_CURRENCY, currency);
         db.insert(EXPENSE_TABLE_ADD, null, values);
         db.close();
     }
@@ -134,17 +146,22 @@ public class DBHelper extends SQLiteOpenHelper {
         return numRowsAdd;
     }
 
+    //Shelanskey US1 - New method to handle budget amount
     public boolean updateCategory(Integer id, String name, Integer budget) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(CATEGORY_COLUMN_ID, id);
         contentValues.put(CATEGORY_COLUMN_CATEGORY_NAME, name);
+
+        //Shelanskey US1 - added new column
         contentValues.put(CATEGORY_COLUMN_BUDGET_NAME, budget);
 
         db.update(CATEGORY_TABLE_NAME, contentValues, CATEGORY_COLUMN_ID + "=" +id, null);
         return true;
     }
 
+    //Keeping original method signature for default category creation with a 0 budget
+    //TODO change flow on category add
     public boolean updateCategory(Integer id, String name) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -172,10 +189,12 @@ public class DBHelper extends SQLiteOpenHelper {
         ContentValues contentValues = new ContentValues();
         contentValues.put(EXPENSE_ADD_COLUMN_ID, id);
         contentValues.put(EXPENSE_ADD_COLUMN_CATEGORY_ADD, category_add);
+
+        //Shelanskey, Ghale US4, US6 - All expenses get saved in Dollars to normalize sum, history, and budget calculations
         contentValues.put(EXPENSE_ADD_COLUMN_AMOUNT, CurrencyHandler.convertToDollars(currency ,amount));
+
         contentValues.put(EXPENSE_ADD_COLUMN_DATE, date);
         contentValues.put(EXPENSE_ADD_COLUMN_NOTE, note);
-        // ContentValues.put("currency", currency);
 
         db.update(EXPENSE_TABLE_ADD, contentValues,EXPENSE_ADD_COLUMN_ID+ "=" +id , null );
         return true;
@@ -212,6 +231,8 @@ public class DBHelper extends SQLiteOpenHelper {
     }
     public List<Overview_ListView> getOverviewList() {
         Overview_ListView overList = null;
+
+        //Shelanskey, Ghale US4, US6 - All expenses get saved in Dollars to normalize sum, history, and budget calculations
         String currencyType = getSetting("CURRENCY");
 
         List<Overview_ListView> listOverview = new ArrayList<>();
@@ -232,6 +253,8 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     public List<TabHistory_Week_List> getHistoryWeek() {
+
+        //Shelanskey, Ghale US4, US6 - All expenses get saved in Dollars to normalize sum, history, and budget calculations
         String currencyType = getSetting("CURRENCY");
         TabHistory_Week_List sample = null;
 
@@ -298,8 +321,9 @@ public class DBHelper extends SQLiteOpenHelper {
         cursor.moveToFirst();
 
         while (!cursor.isAfterLast()) {
+            //pGhale US6: Retrieving value of currency for History page
             tab = new TabHistory_Week_List(cursor.getInt(0), cursor.getString(1), cursor.getInt(2), cursor.getString(3), cursor.getString(4), cursor.getString(5));
-            //pGhale: Retrieving value of currency for History page
+
             listArrayList.add(tab);
             cursor.moveToNext();
         }
@@ -371,6 +395,7 @@ public class DBHelper extends SQLiteOpenHelper {
         return true;
     }
 
+    //shelanskey US4 - method for getting all settings
     public List<com.example.dataObject.Setting> getAllSettings() {
         List<Setting> listArray = new ArrayList<>();
         Setting setting;
@@ -390,6 +415,7 @@ public class DBHelper extends SQLiteOpenHelper {
         return listArray;
     }
 
+    //shelanskey US4 - method for getting a specific settings
     public String getSetting(String setting_name) {
         Setting setting;
         hp = new HashMap();

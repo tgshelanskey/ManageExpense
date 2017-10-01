@@ -48,6 +48,7 @@ public class Tab1_Adapter extends BaseAdapter {
         View view = View.inflate(context, R.layout.tab1_list, null);
 
         TextView txtCategoryName = (TextView)view.findViewById(R.id.txtCategoryName);
+        //Shelanskey US2 - Get budget value
         TextView txtCategoryBudget = (TextView)view.findViewById(R.id.txtCategoryBudget);
         txtCategoryName.setText(records.get(position).getName());
         txtCategoryBudget.setText("" + records.get(position).getBudget());
