@@ -3,17 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/add"
-        android:title="Add"
         android:icon="@mipmap/ic_add"
-        app:showAsAction="ifRoom"
-        />
-
-    <item
-        android:id="@+id/action_1"
-        android:orderInCategory="100"
-        android:title="Settings"
-        app:showAsAction="never" >
-    <menu>
+        android:title="Add"
+        app:showAsAction="ifRoom" />
 
 
     <item
@@ -21,13 +13,10 @@
         android:title="Go to Settings"
         app:showAsAction="withText" />
 
-        <item
-            android:id="@+id/exit"
-            android:title="Exit"
-            app:showAsAction="withText" />
 
-
-        </menu>
-   </item>
+    <item
+        android:id="@+id/exit"
+        android:title="Exit"
+        app:showAsAction="withText" />
 
 </menu>

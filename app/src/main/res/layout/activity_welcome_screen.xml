@@ -25,6 +25,30 @@
         android:textSize="30sp"
         android:textStyle="normal|bold" />
 
+    <TextView
+        android:id="@+id/textView24"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Modified for CIS622" />
+
+    <TextView
+        android:id="@+id/textView25"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Group 3" />
+
+    <TextView
+        android:id="@+id/textView27"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="By Tracy Shelanskey" />
+
+    <TextView
+        android:id="@+id/textView28"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="By Pushpa Ghale" />
+
     <ImageView
         android:id="@+id/imgexpense"
         android:layout_width="match_parent"

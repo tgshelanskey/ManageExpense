@@ -90,9 +90,6 @@ public class MainActivity extends AppCompatActivity
                 startActivity(new Intent(this, Setting.class));
                 return true;
 
-            case R.id.action_1:
-                return true;
-
             case R.id.exit:
                 finish();
                 return true;
