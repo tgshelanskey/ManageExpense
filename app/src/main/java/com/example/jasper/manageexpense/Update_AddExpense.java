@@ -17,7 +17,11 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.com.example.utilities.DateUtil;
+
+import java.text.DecimalFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -53,21 +57,28 @@ public class Update_AddExpense extends Activity{
 
     public void loadListView(){
         DBHelper db = new DBHelper(getApplicationContext());
+        final String currencyType = db.getSetting("CURRENCY");
         listExpense = db.getAllExpenses();
-        adapter = new Edit_expense_adapter(getApplicationContext(), listExpense);
+        adapter = new Edit_expense_adapter(getApplicationContext(), listExpense, currencyType);
         listView.setAdapter(adapter);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String name = listExpense.get(position).getName().toString();
-                String amount = listExpense.get(position).getAmount().toString();
+
+
+
+                double amount = listExpense.get(position).getAmount();
                 String date = listExpense.get(position).getDate().toString();
                 String note = listExpense.get(position).getNote().toString();
                 ids = listExpense.get(position).getId();
 
-                ShowDialogBox(name, amount, date, note,  position);
-                ShowTransferBox(name, amount, date, note, position);
+                DecimalFormat precision = new DecimalFormat("0.00");
+                String amountTxt = precision.format(amount + currencyType);
+
+                ShowDialogBox(name, amountTxt, date, note,  position);
+                ShowTransferBox(name, amountTxt, date, note, position);
 
             }
         });
@@ -102,11 +113,12 @@ public class Update_AddExpense extends Activity{
                 String name = spinner.getSelectedItem().toString();
                 Double amount = new Double(txtAmount.getText().toString());
                 String date = txtDate.getText().toString();
+                Date newDate = DateUtil.convertTextToDate(date);
                 String note = txtNote.getText().toString();
 
                 int idDelete = listExpense.get(id).getId();
 
-                db.updateCategoryAdd(idDelete, name, amount, date, note, "Dollar");
+                db.updateCategoryAdd(idDelete, name, amount, newDate, note, "Dollar");
 
                 Toast.makeText(Update_AddExpense.this, "Items Successfully transferred to "+name, Toast.LENGTH_SHORT).show();
                 transferDialog.dismiss();
@@ -175,6 +187,7 @@ public class Update_AddExpense extends Activity{
                 //Shelanskey US5 concert values to double
                 Double amount = new Double(editAmount.getText().toString());
                 String date = editDate.getText().toString();
+                Date newDate = DateUtil.convertTextToDate(date);
                 String note = editNote.getText().toString();
                 editText.setText("");
                 editAmount.setText("");
@@ -182,7 +195,7 @@ public class Update_AddExpense extends Activity{
                 editNote.setText("");
 
                 db.updateCategory(ids, Category_name);
-                db.updateCategoryAdd(ids, Category_name, amount, date, note, currencyType);
+                db.updateCategoryAdd(ids, Category_name, amount, newDate, note, currencyType);
                 Toast.makeText(Update_AddExpense.this, "Expense updated!", Toast.LENGTH_SHORT).show();
 
                 loadListView();

@@ -1,5 +1,7 @@
 package com.example.jasper.manageexpense;
 
+import java.util.Date;
+
 /**
  * Created by Techsoft-003 on 3/16/2017.
  */
@@ -8,11 +10,11 @@ public class TabHistory_Week_List {
     private int id;
     private String name;
     private double amount;
-    private String date;
+    private Date date;
     private String note;
     private String currency; // pGhale
 
-    public TabHistory_Week_List(int id, String name, double amount, String date, String note, String currency) {
+    public TabHistory_Week_List(int id, String name, double amount, Date date, String note, String currency) {
         this.id = id;
         this.name = name;
         this.amount = amount;
@@ -45,11 +47,11 @@ public class TabHistory_Week_List {
         this.amount = amount;
     }
 
-    public String getDate() {
+    public Date getDate() {
         return date;
     }
 
-    public void setDate(String date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 

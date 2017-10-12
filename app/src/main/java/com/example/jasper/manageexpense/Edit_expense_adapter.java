@@ -6,6 +6,9 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.example.com.example.utilities.DateUtil;
+
+import java.text.DecimalFormat;
 import java.util.List;
 
 /**
@@ -15,10 +18,12 @@ import java.util.List;
 public class Edit_expense_adapter extends BaseAdapter {
     Context context;
     List<Edit_expense_List> lists;
+    String currencyType;
 
-    public Edit_expense_adapter(Context context, List<Edit_expense_List> lists){
+    public Edit_expense_adapter(Context context, List<Edit_expense_List> lists, String currencyType){
         this.context = context;
         this.lists = lists;
+        this.currencyType = currencyType;
     }
 
     @Override
@@ -48,8 +53,9 @@ public class Edit_expense_adapter extends BaseAdapter {
 
 
         name.setText(lists.get(position).getName());
-        amount.setText(lists.get(position).getAmount());
-        date.setText(lists.get(position).getDate());
+        DecimalFormat precision = new DecimalFormat("0.00");
+        amount.setText(precision.format(lists.get(position).getAmount()) + currencyType);
+        date.setText(DateUtil.convertDateToText(lists.get(position).getDate()));
         note.setText(lists.get(position).getNote());
 
         return view;

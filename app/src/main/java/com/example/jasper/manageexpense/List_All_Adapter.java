@@ -18,10 +18,12 @@ public class List_All_Adapter extends BaseAdapter {
 
     Context context;
     List<List_All> listAlls;
+    String currencyType;
 
-    public List_All_Adapter (Context context, List<List_All> listAlls){
+    public List_All_Adapter (Context context, List<List_All> listAlls, String currencyType){
         this.context = context;
         this.listAlls = listAlls;
+        this.currencyType = currencyType;
 
     }
 
@@ -50,7 +52,7 @@ public class List_All_Adapter extends BaseAdapter {
 
         txtName.setText(listAlls.get(position).getName());
         DecimalFormat precision = new DecimalFormat("0.00");
-        txtAmount.setText(precision.format(listAlls.get(position).getAmount()) + " Php");
+        txtAmount.setText(precision.format(listAlls.get(position).getAmount()) + currencyType);
         progressBar.setProgress(txtAmount.getAutoLinkMask());
         progressBar.setProgress(0);
         progressBar.setMax(100);

@@ -1,5 +1,7 @@
 package com.example.jasper.manageexpense;
 
+import java.util.Date;
+
 /**
  * Created by Techsoft - 001 on 4/22/2017.
  */
@@ -7,11 +9,11 @@ package com.example.jasper.manageexpense;
 public class Edit_expense_List {
     private int id;
     private String name;
-    private String amount;
-    private String date;
+    private double amount;
+    private Date date;
     private String note;
 
-    Edit_expense_List(int id, String name, String amount, String date, String note){
+    Edit_expense_List(int id, String name, double amount, Date date, String note){
         this.id = id;
         this.name = name;
         this.amount = amount;
@@ -36,19 +38,17 @@ public class Edit_expense_List {
         this.name = name;
     }
 
-    public String getAmount() {
-        return amount;
-    }
+    public double getAmount() { return amount; }
 
-    public void setAmount(String amount) {
+    public void setAmount(double amount) {
         this.amount = amount;
     }
 
-    public String getDate() {
+    public Date getDate() {
         return date;
     }
 
-    public void setDate(String date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 

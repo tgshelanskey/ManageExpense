@@ -20,7 +20,10 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.example.com.example.utilities.DateUtil;
+
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -79,11 +82,12 @@ public class AddNewExpense extends Fragment implements AdapterView.OnItemSelecte
 
             String date = editDate.getText().toString();
             String note = editNote.getText().toString();
+            Date newDate = DateUtil.convertTextToDate(date);
 
             if (category_add.trim().length() > 0) {
                 DBHelper db = new DBHelper(getContext());
 
-                db.insertAdd_Expense(category_add,amount,date,note, currencyType);
+                db.insertAdd_Expense(category_add,amount,newDate,note, currencyType);
 
                 editAmount.setText("");
                 editDate.setText("");

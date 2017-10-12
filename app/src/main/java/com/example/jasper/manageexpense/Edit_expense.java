@@ -27,8 +27,9 @@ public class Edit_expense extends Activity {
 
     public void loadListView(){
         DBHelper db = new DBHelper(getApplicationContext());
+        String currencyType = db.getSetting("CURRENCY");
         listExpense = db.getAllExpenses();
-        adapter = new Edit_expense_adapter(getApplicationContext(), listExpense);
+        adapter = new Edit_expense_adapter(getApplicationContext(), listExpense, currencyType);
         listView.setAdapter(adapter);
 
     }

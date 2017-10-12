@@ -141,7 +141,7 @@ public class Graph_all extends Fragment {
         mChart.setCenterTextColor(Color.CYAN);
 
     }
-
+    //TODO fix this. It is not calculating a percentage
     public void loadListView() {
         DBHelper db = new DBHelper(getContext());
         listOverview = db.getPieGrapgListView();

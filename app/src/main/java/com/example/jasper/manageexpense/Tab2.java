@@ -29,6 +29,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.com.example.utilities.CurrencyHandler;
+import com.example.com.example.utilities.DateUtil;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -172,6 +173,7 @@ public class Tab2 extends Activity implements AdapterView.OnItemSelectedListener
                 String category_add = spinner.getSelectedItem().toString();
                 Double amount = new Double(amount_add.getText().toString());
                 String date = date_add.getText().toString();
+                Date newDate = DateUtil.convertTextToDate(date);
                 String notes = note.getText().toString();
                 //pGhale US6: getting the current selected currency
                 String currency = spinnerCurrency.getSelectedItem().toString();
@@ -185,7 +187,7 @@ public class Tab2 extends Activity implements AdapterView.OnItemSelectedListener
                 if (category_add.trim().length() > 0) {
                     DBHelper db = new DBHelper(getApplicationContext());
                     //pghale US6: adding currency column to the Add_Expense table
-                    db.insertAdd_Expense(category_add, amount, date, notes, currency);//pghale: adding currency column to the Add_Expense table
+                    db.insertAdd_Expense(category_add, amount, newDate, notes, currency);//pghale: adding currency column to the Add_Expense table
                     List<Edit_expense_List> a = db.getAllExpenses();
 
                     amount_add.setText("");

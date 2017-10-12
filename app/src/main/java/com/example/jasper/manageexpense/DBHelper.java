@@ -10,7 +10,10 @@ import android.database.sqlite.SQLiteOpenHelper;
 import com.example.com.example.utilities.CurrencyHandler;
 import com.example.dataObject.Setting;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -65,8 +68,9 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL(createTable);
 
         //pghale US7: Added currency column in Expense table
-        String createTableAdd = "create table Add_Expense (add_id integer primary key AUTOINCREMENT, category_add, amount double, date, note, currency);";
+        String createTableAdd = "create table Add_Expense (add_id integer primary key AUTOINCREMENT, category_add, amount double, date long, note, currency);";
         db.execSQL(createTableAdd);
+
 
         //Shelanskey US4 - adding table creates for new settings table
         String createTableSettings = "create table " + SETTINGS_TABLE_NAME + " (" + SETTINGS_COLUMN_ID + " integer primary key AUTOINCREMENT, " +
@@ -101,13 +105,13 @@ public class DBHelper extends SQLiteOpenHelper {
 
     }
 
-    public void insertAdd_Expense(String category_add, Double amount, String date, String note, String currency) {
+    public void insertAdd_Expense(String category_add, Double amount, Date date, String note, String currency) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
         values.put(EXPENSE_ADD_COLUMN_CATEGORY_ADD, category_add);
         values.put(EXPENSE_ADD_COLUMN_AMOUNT, CurrencyHandler.convertToDollars(currency ,amount));
-        values.put(EXPENSE_ADD_COLUMN_DATE, date);
+        values.put(EXPENSE_ADD_COLUMN_DATE, date.getTime());
         values.put(EXPENSE_ADD_COLUMN_NOTE, note);
 
         //pGhale US7: It inserts currency data in currency column
@@ -184,7 +188,7 @@ public class DBHelper extends SQLiteOpenHelper {
         return true;
     }
 
-    public boolean updateCategoryAdd(Integer id, String category_add, Double amount, String date, String note, String currency) {
+    public boolean updateCategoryAdd(Integer id, String category_add, Double amount, Date date, String note, String currency) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(EXPENSE_ADD_COLUMN_ID, id);
@@ -193,7 +197,7 @@ public class DBHelper extends SQLiteOpenHelper {
         //Shelanskey, Ghale US4, US6 - All expenses get saved in Dollars to normalize sum, history, and budget calculations
         contentValues.put(EXPENSE_ADD_COLUMN_AMOUNT, CurrencyHandler.convertToDollars(currency ,amount));
 
-        contentValues.put(EXPENSE_ADD_COLUMN_DATE, date);
+        contentValues.put(EXPENSE_ADD_COLUMN_DATE, date.getTime());
         contentValues.put(EXPENSE_ADD_COLUMN_NOTE, note);
 
         db.update(EXPENSE_TABLE_ADD, contentValues,EXPENSE_ADD_COLUMN_ID+ "=" +id , null );
@@ -241,8 +245,9 @@ public class DBHelper extends SQLiteOpenHelper {
         Cursor cursor = db.rawQuery("SELECT category_add, date, note,  SUM(amount) AS total  FROM Add_Expense  Group by category_add ORDER by date desc ", null);
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
+            Date readDate = new Date(cursor.getLong(cursor.getColumnIndexOrThrow("date")));
             overList = new Overview_ListView(cursor.getInt(0), cursor.getString(cursor.getColumnIndexOrThrow("category_add")), CurrencyHandler.convertToNative(currencyType, cursor.getDouble(cursor.getColumnIndexOrThrow("total"))),
-                     cursor.getString(cursor.getColumnIndexOrThrow("date")), cursor.getString(cursor.getColumnIndexOrThrow("note")));
+                     readDate, cursor.getString(cursor.getColumnIndexOrThrow("note")));
             listOverview.add(overList);
             cursor.moveToNext();
 
@@ -264,7 +269,8 @@ public class DBHelper extends SQLiteOpenHelper {
         Cursor cursor = db.rawQuery("select * from Add_Expense  ", null);
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
-            sample = new TabHistory_Week_List(cursor.getInt(0), cursor.getString(1), cursor.getDouble(2), cursor.getString(3), cursor.getString(4), cursor.getString(5));
+            Date readDate = new Date(cursor.getLong(cursor.getColumnIndexOrThrow("date")));
+            sample = new TabHistory_Week_List(cursor.getInt(0), cursor.getString(1), cursor.getDouble(2), readDate, cursor.getString(4), cursor.getString(5));
             //pGhale : getting currency value from the add_expense table
             sample.setAmount(CurrencyHandler.convertToNative(currencyType, sample.getAmount()));
             sampleList.add(sample);
@@ -322,7 +328,8 @@ public class DBHelper extends SQLiteOpenHelper {
 
         while (!cursor.isAfterLast()) {
             //pGhale US6: Retrieving value of currency for History page
-            tab = new TabHistory_Week_List(cursor.getInt(0), cursor.getString(1), cursor.getInt(2), cursor.getString(3), cursor.getString(4), cursor.getString(5));
+            Date readDate = new Date(cursor.getLong(cursor.getColumnIndexOrThrow("date")));
+            tab = new TabHistory_Week_List(cursor.getInt(0), cursor.getString(1), cursor.getDouble(2), readDate, cursor.getString(4), cursor.getString(5));
 
             listArrayList.add(tab);
             cursor.moveToNext();
@@ -342,7 +349,8 @@ public class DBHelper extends SQLiteOpenHelper {
         cursor.moveToFirst();
 
         while (!cursor.isAfterLast()) {
-            list = new Edit_expense_List(cursor.getInt(0), cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4));
+            Date readDate = new Date(cursor.getLong(cursor.getColumnIndexOrThrow("date")));
+            list = new Edit_expense_List(cursor.getInt(0), cursor.getString(1), cursor.getDouble(2), readDate, cursor.getString(4));
             listArray.add(list);
             cursor.moveToNext();
         }
@@ -360,8 +368,9 @@ public class DBHelper extends SQLiteOpenHelper {
         Cursor cursor = db.rawQuery("SELECT category_name, SUM(amount) AS total, date FROM Add_Expense " , null);
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
+            Date readDate = new Date(cursor.getLong(cursor.getColumnIndexOrThrow("date")));
             overList = new List_All(cursor.getInt(0), cursor.getString(cursor.getColumnIndexOrThrow("category_name")),
-                    cursor.getInt(cursor.getColumnIndexOrThrow("total")), cursor.getString(cursor.getColumnIndexOrThrow("date")) );
+                    cursor.getInt(cursor.getColumnIndexOrThrow("total")), readDate );
             listOverview.add(overList);
             cursor.moveToNext();
 
@@ -429,4 +438,10 @@ public class DBHelper extends SQLiteOpenHelper {
         return setting.getSetting_value();
     }
 
+    private double checkThreshold(String category){
+        double overageAmount = 0.0;
+        Date date = new Date();
+        DateFormat formatter = new SimpleDateFormat("");
+        return overageAmount;
+    }
 }

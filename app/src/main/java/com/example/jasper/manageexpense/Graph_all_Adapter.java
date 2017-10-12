@@ -57,13 +57,21 @@ public class Graph_all_Adapter extends BaseAdapter {
         txtAmount.setText(String.valueOf(lists.get(position).getAmount()));
         if(!txtAmount.toString().equals("")){
             double amount = Double.parseDouble(txtAmount.getText().toString());
-            double res = (amount  / 100.0f);
+            double res = (amount  / getTotalExpense()) * 100;
             txtPercent.setText(String.valueOf(res)+"%");
         }else {
 
         }
 
         return view;
+    }
+
+    private double getTotalExpense() {
+        double total = 0;
+        for (Graph_all_List list : lists) {
+            total += list.getAmount();
+        }
+        return total;
     }
 
 
