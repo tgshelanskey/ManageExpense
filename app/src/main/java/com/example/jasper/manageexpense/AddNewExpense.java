@@ -70,7 +70,6 @@ public class AddNewExpense extends Fragment implements AdapterView.OnItemSelecte
         btnCancel = (Button)view.findViewById(R.id.btnCancel);
         btnSave = (Button)view.findViewById(R.id.btnSave);
 
-
         btnSave.setOnClickListener(new View.OnClickListener() {
 
         @Override
@@ -82,12 +81,17 @@ public class AddNewExpense extends Fragment implements AdapterView.OnItemSelecte
 
             String date = editDate.getText().toString();
             String note = editNote.getText().toString();
+
             Date newDate = DateUtil.convertTextToDate(date);
+
 
             if (category_add.trim().length() > 0) {
                 DBHelper db = new DBHelper(getContext());
 
-                db.insertAdd_Expense(category_add,amount,newDate,note, currencyType);
+                double chkValue = db.insertAdd_Expense(category_add,amount,newDate,note, currencyType);
+                if (chkValue < 0){
+                    Toast.makeText(getContext(), "Exceeded Budget for " + category_add, Toast.LENGTH_SHORT).show();
+                }
 
                 editAmount.setText("");
                 editDate.setText("");
@@ -124,6 +128,10 @@ public class AddNewExpense extends Fragment implements AdapterView.OnItemSelecte
         Toast.makeText(getContext(), "Choose date", Toast.LENGTH_SHORT).show();
         return;
     }
+
+
+
+
 
 
     protected Dialog onCreateDialog(int id) {

@@ -113,6 +113,7 @@ public class Update_AddExpense extends Activity{
                 String name = spinner.getSelectedItem().toString();
                 Double amount = new Double(txtAmount.getText().toString());
                 String date = txtDate.getText().toString();
+
                 Date newDate = DateUtil.convertTextToDate(date);
                 String note = txtNote.getText().toString();
 
@@ -187,6 +188,7 @@ public class Update_AddExpense extends Activity{
                 //Shelanskey US5 concert values to double
                 Double amount = new Double(editAmount.getText().toString());
                 String date = editDate.getText().toString();
+
                 Date newDate = DateUtil.convertTextToDate(date);
                 String note = editNote.getText().toString();
                 editText.setText("");

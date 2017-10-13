@@ -60,6 +60,7 @@ public class TabHistory_Week_Adapter extends BaseAdapter{
         txtName.setText(listWeek.get(position).getName());
         DecimalFormat precision = new DecimalFormat("0.00");
         txtAmount.setText(precision.format(listWeek.get(position).getAmount()));
+
         txtDate.setText(DateUtil.convertDateToText(listWeek.get(position).getDate()));
         txtNote.setText(listWeek.get(position).getNote());
         txtCurrency.setText(listWeek.get(position).getCurrency());

@@ -3,6 +3,7 @@ package com.example.com.example.utilities;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -10,8 +11,11 @@ import java.util.Date;
  */
 
 public class DateUtil {
-    public static final String DATEFORMAT = "mm/dd/yyyy";
-    public static Date convertTextToDate(String stringDate){
+    private static final String DATEFORMAT = "MM/dd/yyyy";
+
+    private DateUtil(){}
+
+    public static  Date convertTextToDate(String stringDate){
         DateFormat df = new SimpleDateFormat(DATEFORMAT);
 
         Date newDate = null;
@@ -23,9 +27,16 @@ public class DateUtil {
 
         return newDate;
     }
+
     public static String convertDateToText(Date date){
         DateFormat df = new SimpleDateFormat(DATEFORMAT);
-        String newDate = df.format(date);
-        return newDate;
+        return df.format(date);
+    }
+
+    public static Date getFirstDayOfMonth(){
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.DAY_OF_MONTH, 1);
+        return calendar.getTime();
+
     }
 }

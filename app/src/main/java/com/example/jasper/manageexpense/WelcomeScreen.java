@@ -7,6 +7,11 @@ import android.os.Bundle;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.Toast;
+
+import com.example.com.example.utilities.DateUtil;
+
+import java.util.Date;
 
 public class WelcomeScreen extends Activity {
 
@@ -14,6 +19,7 @@ public class WelcomeScreen extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome_screen);
+
 
         final ImageView iv = (ImageView)findViewById(R.id.imgexpense);
         final Animation an = AnimationUtils.loadAnimation(getBaseContext(),R.anim.animate_welcome);

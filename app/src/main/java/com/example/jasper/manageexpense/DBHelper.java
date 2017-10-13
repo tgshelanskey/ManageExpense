@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.example.com.example.utilities.CurrencyHandler;
+import com.example.com.example.utilities.DateUtil;
 import com.example.dataObject.Setting;
 
 import java.text.DateFormat;
@@ -105,7 +106,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     }
 
-    public void insertAdd_Expense(String category_add, Double amount, Date date, String note, String currency) {
+    public double insertAdd_Expense(String category_add, Double amount, Date date, String note, String currency) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -118,6 +119,8 @@ public class DBHelper extends SQLiteOpenHelper {
         values.put(EXPENSE_ADD_COLUMN_CURRENCY, currency);
         db.insert(EXPENSE_TABLE_ADD, null, values);
         db.close();
+        double chkValue = checkThreshold(category_add);
+        return chkValue;
     }
 
     public Cursor getData(int id) {
@@ -438,10 +441,30 @@ public class DBHelper extends SQLiteOpenHelper {
         return setting.getSetting_value();
     }
 
+    private double getBudgetAmount(String category){
+        double budgetAmount;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("select " + CATEGORY_COLUMN_BUDGET_NAME + "  from " + CATEGORY_TABLE_NAME + " where " +
+                CATEGORY_COLUMN_CATEGORY_NAME + " = \"" + category +"\"", null);
+        cursor.moveToFirst();
+        budgetAmount = cursor.getDouble(0);
+        cursor.close();
+        db.close();
+        return budgetAmount;
+    }
+
     private double checkThreshold(String category){
         double overageAmount = 0.0;
-        Date date = new Date();
-        DateFormat formatter = new SimpleDateFormat("");
+        double expenseAmount, budgetAmount;
+        long firstOfMonth = DateUtil.getFirstDayOfMonth().getTime();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("select sum(amount) from Add_Expense where category_add = \"" + category + "\" and date > " + firstOfMonth, null);
+        cursor.moveToFirst();
+        expenseAmount = cursor.getDouble(0);
+        cursor.close();
+        db.close();
+        budgetAmount = getBudgetAmount(category);
+        overageAmount = budgetAmount - expenseAmount;
         return overageAmount;
     }
 }

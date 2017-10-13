@@ -173,6 +173,7 @@ public class Tab2 extends Activity implements AdapterView.OnItemSelectedListener
                 String category_add = spinner.getSelectedItem().toString();
                 Double amount = new Double(amount_add.getText().toString());
                 String date = date_add.getText().toString();
+
                 Date newDate = DateUtil.convertTextToDate(date);
                 String notes = note.getText().toString();
                 //pGhale US6: getting the current selected currency
@@ -187,7 +188,10 @@ public class Tab2 extends Activity implements AdapterView.OnItemSelectedListener
                 if (category_add.trim().length() > 0) {
                     DBHelper db = new DBHelper(getApplicationContext());
                     //pghale US6: adding currency column to the Add_Expense table
-                    db.insertAdd_Expense(category_add, amount, newDate, notes, currency);//pghale: adding currency column to the Add_Expense table
+                    double chkValue = db.insertAdd_Expense(category_add, amount, newDate, notes, currency);//pghale: adding currency column to the Add_Expense table
+                    if (chkValue < 0){
+                        Toast.makeText(getApplicationContext(), "Exceeded Budget for " + category_add, Toast.LENGTH_SHORT).show();
+                    }
                     List<Edit_expense_List> a = db.getAllExpenses();
 
                     amount_add.setText("");

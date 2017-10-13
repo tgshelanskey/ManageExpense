@@ -55,6 +55,7 @@ public class Edit_expense_adapter extends BaseAdapter {
         name.setText(lists.get(position).getName());
         DecimalFormat precision = new DecimalFormat("0.00");
         amount.setText(precision.format(lists.get(position).getAmount()) + currencyType);
+
         date.setText(DateUtil.convertDateToText(lists.get(position).getDate()));
         note.setText(lists.get(position).getNote());
 
