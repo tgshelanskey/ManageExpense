@@ -82,6 +82,7 @@ public class AddNewExpense extends Fragment implements AdapterView.OnItemSelecte
             String date = editDate.getText().toString();
             String note = editNote.getText().toString();
 
+            //Shelanskey US8 - convert from text to Date object
             Date newDate = DateUtil.convertTextToDate(date);
 
 
@@ -89,6 +90,8 @@ public class AddNewExpense extends Fragment implements AdapterView.OnItemSelecte
                 DBHelper db = new DBHelper(getContext());
 
                 double chkValue = db.insertAdd_Expense(category_add,amount,newDate,note, currencyType);
+
+                //Shelanskey US9 - add check to see if new expense exceeds budget limit for category
                 if (chkValue < 0){
                     Toast.makeText(getContext(), "Exceeded Budget for " + category_add, Toast.LENGTH_SHORT).show();
                 }

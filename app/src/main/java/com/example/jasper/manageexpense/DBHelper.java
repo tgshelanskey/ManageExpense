@@ -69,6 +69,7 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL(createTable);
 
         //pghale US7: Added currency column in Expense table
+        //shelanskey US8 changed date to long
         String createTableAdd = "create table Add_Expense (add_id integer primary key AUTOINCREMENT, category_add, amount double, date long, note, currency);";
         db.execSQL(createTableAdd);
 
@@ -112,6 +113,8 @@ public class DBHelper extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put(EXPENSE_ADD_COLUMN_CATEGORY_ADD, category_add);
         values.put(EXPENSE_ADD_COLUMN_AMOUNT, CurrencyHandler.convertToDollars(currency ,amount));
+
+        //shelanskey US8 COnvert date to long
         values.put(EXPENSE_ADD_COLUMN_DATE, date.getTime());
         values.put(EXPENSE_ADD_COLUMN_NOTE, note);
 
@@ -119,6 +122,7 @@ public class DBHelper extends SQLiteOpenHelper {
         values.put(EXPENSE_ADD_COLUMN_CURRENCY, currency);
         db.insert(EXPENSE_TABLE_ADD, null, values);
         db.close();
+        //shelanskey us9 - chk to see if new expense pushed us over the threshhold
         double chkValue = checkThreshold(category_add);
         return chkValue;
     }
@@ -200,6 +204,7 @@ public class DBHelper extends SQLiteOpenHelper {
         //Shelanskey, Ghale US4, US6 - All expenses get saved in Dollars to normalize sum, history, and budget calculations
         contentValues.put(EXPENSE_ADD_COLUMN_AMOUNT, CurrencyHandler.convertToDollars(currency ,amount));
 
+        //shelanskey us8 convert data to long
         contentValues.put(EXPENSE_ADD_COLUMN_DATE, date.getTime());
         contentValues.put(EXPENSE_ADD_COLUMN_NOTE, note);
 
@@ -248,6 +253,7 @@ public class DBHelper extends SQLiteOpenHelper {
         Cursor cursor = db.rawQuery("SELECT category_add, date, note,  SUM(amount) AS total  FROM Add_Expense  Group by category_add ORDER by date desc ", null);
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
+            //Shelanskey US8 - convert table date from long to date object
             Date readDate = new Date(cursor.getLong(cursor.getColumnIndexOrThrow("date")));
             overList = new Overview_ListView(cursor.getInt(0), cursor.getString(cursor.getColumnIndexOrThrow("category_add")), CurrencyHandler.convertToNative(currencyType, cursor.getDouble(cursor.getColumnIndexOrThrow("total"))),
                      readDate, cursor.getString(cursor.getColumnIndexOrThrow("note")));
@@ -272,6 +278,7 @@ public class DBHelper extends SQLiteOpenHelper {
         Cursor cursor = db.rawQuery("select * from Add_Expense  ", null);
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
+            //Shelanskey US8 - convert table date from long to date object
             Date readDate = new Date(cursor.getLong(cursor.getColumnIndexOrThrow("date")));
             sample = new TabHistory_Week_List(cursor.getInt(0), cursor.getString(1), cursor.getDouble(2), readDate, cursor.getString(4), cursor.getString(5));
             //pGhale : getting currency value from the add_expense table
@@ -331,6 +338,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
         while (!cursor.isAfterLast()) {
             //pGhale US6: Retrieving value of currency for History page
+            //Shelanskey US8 - convert table date from long to date object
             Date readDate = new Date(cursor.getLong(cursor.getColumnIndexOrThrow("date")));
             tab = new TabHistory_Week_List(cursor.getInt(0), cursor.getString(1), cursor.getDouble(2), readDate, cursor.getString(4), cursor.getString(5));
 
@@ -352,6 +360,7 @@ public class DBHelper extends SQLiteOpenHelper {
         cursor.moveToFirst();
 
         while (!cursor.isAfterLast()) {
+            //Shelanskey US8 - convert table date from long to date object
             Date readDate = new Date(cursor.getLong(cursor.getColumnIndexOrThrow("date")));
             list = new Edit_expense_List(cursor.getInt(0), cursor.getString(1), cursor.getDouble(2), readDate, cursor.getString(4));
             listArray.add(list);
@@ -441,6 +450,7 @@ public class DBHelper extends SQLiteOpenHelper {
         return setting.getSetting_value();
     }
 
+    //Shelanskey US9 - Method to get total expenses for a category for current month since day 1
     private double getBudgetAmount(String category){
         double budgetAmount;
         SQLiteDatabase db = this.getReadableDatabase();
@@ -453,6 +463,7 @@ public class DBHelper extends SQLiteOpenHelper {
         return budgetAmount;
     }
 
+    //Shelanskey US9 - method to calculate whether expenses exceed budget amount
     private double checkThreshold(String category){
         double overageAmount = 0.0;
         double expenseAmount, budgetAmount;

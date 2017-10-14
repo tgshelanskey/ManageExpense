@@ -56,6 +56,7 @@ public class Edit_expense_adapter extends BaseAdapter {
         DecimalFormat precision = new DecimalFormat("0.00");
         amount.setText(precision.format(lists.get(position).getAmount()) + currencyType);
 
+        //Shelanskey US8 - convert Date Object to Text
         date.setText(DateUtil.convertDateToText(lists.get(position).getDate()));
         note.setText(lists.get(position).getNote());
 
