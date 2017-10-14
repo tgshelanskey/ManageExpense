@@ -190,7 +190,8 @@ public class Tab2 extends Activity implements AdapterView.OnItemSelectedListener
                     //pghale US6: adding currency column to the Add_Expense table
                     double chkValue = db.insertAdd_Expense(category_add, amount, newDate, notes, currency);//pghale: adding currency column to the Add_Expense table
                     if (chkValue < 0){
-                        Toast.makeText(getApplicationContext(), "Exceeded Budget for " + category_add, Toast.LENGTH_SHORT).show();
+                        showAlertDialog(category_add, chkValue);
+                        //Toast.makeText(getApplicationContext(), "Exceeded Budget for " + category_add, Toast.LENGTH_SHORT).show();
                     }
                     List<Edit_expense_List> a = db.getAllExpenses();
 
@@ -285,6 +286,21 @@ public class Tab2 extends Activity implements AdapterView.OnItemSelectedListener
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
         Toast.makeText(parent.getContext(), "Please select category", Toast.LENGTH_LONG).show();
+    }
+
+    private void showAlertDialog(String category, double overage) {
+        AlertDialog alertDialog = new AlertDialog.Builder(Tab2.this).create();
+        alertDialog.setTitle("Budget Alert");
+        alertDialog.setMessage("You have spent $" + Math.abs(overage) + "\nmore than allowed for " + category + ".");
+        alertDialog.setIcon(R.drawable.alert);
+
+        alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                Toast.makeText(getApplicationContext(), "You clicked on OK", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        alertDialog.show();
     }
 }
 
