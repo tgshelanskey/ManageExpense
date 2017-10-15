@@ -55,10 +55,14 @@ public class Graph_all_Adapter extends BaseAdapter {
 
         txtName.setText(lists.get(position).getName());
         txtAmount.setText(String.valueOf(lists.get(position).getAmount()));
+
+        //Shelanskey - Fix percentage calculation
         if(!txtAmount.toString().equals("")){
+
+            DecimalFormat precision = new DecimalFormat("0.00");
             double amount = Double.parseDouble(txtAmount.getText().toString());
             double res = (amount  / getTotalExpense()) * 100;
-            txtPercent.setText(String.valueOf(res)+"%");
+            txtPercent.setText(precision.format(res)+"%");
         }else {
 
         }

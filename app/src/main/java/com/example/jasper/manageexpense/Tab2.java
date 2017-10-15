@@ -54,7 +54,7 @@ public class Tab2 extends Activity implements AdapterView.OnItemSelectedListener
     Spinner spinner;
     //pGhale US6 : declaring spinner variable spinnercurrency
     Spinner spinnerCurrency;
-    Spinner spinnerpayment; //pGhale : declaring spinner variable spinnerpayment
+    Spinner spinnerPayment; //pGhale : declaring spinner variable spinnerpayment
     EditText location;
     private int year, month, day;
     final Context context = this;
@@ -82,6 +82,12 @@ public class Tab2 extends Activity implements AdapterView.OnItemSelectedListener
         spinnerCurrency = (Spinner) findViewById(R.id.spinner_unit); //pGhale : populates spinnerCurrency object
         spinnerCurrency.setOnItemSelectedListener(this);
         spinnerCurrency.setSelection(preferredCurrency);
+
+        //pghale US11 Add spinner for payment type
+        spinnerPayment = (Spinner) findViewById(R.id.payment_spinner);
+        spinnerPayment.setOnItemSelectedListener(this);
+        spinnerPayment.setSelection(preferredCurrency);
+
         loadListView();
 
         calendar = Calendar.getInstance();
@@ -182,8 +188,8 @@ public class Tab2 extends Activity implements AdapterView.OnItemSelectedListener
                 String notes = note.getText().toString();
                 //pGhale US6: getting the current selected currency
                 String currency = spinnerCurrency.getSelectedItem().toString();
-                String payment =spinnerpayment.getSelectedItem().toString(); //pGhale: getting the current selected payment
-                String locations =location.getText().toString(); //pGhale:
+                String payment = spinnerPayment.getSelectedItem().toString(); //pGhale US11: getting the current selected payment
+                String locations =location.getText().toString(); //pGhale US10 :
 
                 if (category_add.length() <= 0) {
                     Toast.makeText(getApplicationContext(), "Please Add Category first!", Toast.LENGTH_LONG).show();
@@ -194,7 +200,7 @@ public class Tab2 extends Activity implements AdapterView.OnItemSelectedListener
                 if (category_add.trim().length() > 0) {
                     DBHelper db = new DBHelper(getApplicationContext());
                     //pghale US6: adding currency column to the Add_Expense table
-                    double chkValue = db.insertAdd_Expense(category_add, amount, newDate, notes, currency, payment,locations);//pghale: adding currency, location and payment columns to the Add_Expense table
+                    double chkValue = db.insertAdd_Expense(category_add, amount, newDate, notes, currency, payment,locations);//pghale US10,11: adding currency, location and payment columns to the Add_Expense table
                     //shelanskey US9 - added check for budget, display alertDialog if budget is exceeded
                     if (chkValue < 0){
                         showAlertDialog(category_add, chkValue);
@@ -294,7 +300,7 @@ public class Tab2 extends Activity implements AdapterView.OnItemSelectedListener
         //pGhale US6: getting the current selected currency
         spinnerCurrency.getSelectedItem().toString();
         //Toast.makeText(parent.getContext(), "You Selected: " + label, Toast.LENGTH_SHORT).show();
-        spinnerpayment.getSelectedItem().toString(); //pGhale: getting the current selected payment
+        spinnerPayment.getSelectedItem().toString(); //pGhale US11: getting the current selected payment
     }
 
     @Override

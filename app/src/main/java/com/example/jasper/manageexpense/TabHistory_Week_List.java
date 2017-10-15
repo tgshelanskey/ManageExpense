@@ -14,8 +14,8 @@ public class TabHistory_Week_List {
     private Date date;
     private String note;
     private String currency; // pGhale: declaring string currency
-    private String payment; //pGhale: declaring string payment
-    private String location; //pGhale: declaring string location
+    private String payment; //pGhale US11: declaring string payment
+    private String location; //pGhale US10: declaring string location
 
     public TabHistory_Week_List(int id, String name, double amount, Date date, String note, String currency, String payment, String location) {
         this.id = id;
@@ -24,8 +24,8 @@ public class TabHistory_Week_List {
         this.date = date;
         this.note = note;
         this.currency = currency; //pGhale: adding currency value in TabHistory_Week_List object
-        this.payment = payment; //pGhale: adding payment value in TabHistory_Week_List object
-        this.location = location; //pGhale: adding location value in TabHistory_Week_List object
+        this.payment = payment; //pGhale US11: adding payment value in TabHistory_Week_List object
+        this.location = location; //pGhale US10: adding location value in TabHistory_Week_List object
     }
 
     public int getId() {
@@ -72,12 +72,12 @@ public class TabHistory_Week_List {
 
     public void setCurrency(String currency) {this.currency =currency;} //pGhale: creating method setCurrency
 
-    public String getPayment(){return payment;} // pGhale: creating a method getPayment
+    public String getPayment(){return payment;} // pGhale US11: creating a method getPayment
 
-    public void setPayment(String payment) {this.payment =payment;} //pGhale: creating method setPayment
+    public void setPayment(String payment) {this.payment =payment;} //pGhale US11: creating method setPayment
 
-    public String getLocation(){return location;} // pGhale: creating a method getLocation
+    public String getLocation(){return location;} // pGhale US10: creating a method getLocation
 
-    public void setLocation(String location) {this.location = location;} //pGhale: creating method setLocation
+    public void setLocation(String location) {this.location = location;} //pGhale US10: creating method setLocation
 
 }

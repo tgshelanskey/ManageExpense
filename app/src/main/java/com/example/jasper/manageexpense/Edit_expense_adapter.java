@@ -54,6 +54,7 @@ public class Edit_expense_adapter extends BaseAdapter {
 
 
         name.setText(lists.get(position).getName());
+        //Shelanskey fix to handle amount as a double
         DecimalFormat precision = new DecimalFormat("0.00");
         amount.setText(precision.format(lists.get(position).getAmount()) + currencyType);
 

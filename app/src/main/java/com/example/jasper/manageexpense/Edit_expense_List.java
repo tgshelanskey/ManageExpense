@@ -9,10 +9,11 @@ import java.util.Date;
 public class Edit_expense_List {
     private int id;
     private String name;
-    private double amount;
+    private double amount; //Shelanskey chang eto double
     private Date date;
     private String note;
-    private String location;
+    private String location;  //pghale: add location
+
 
     Edit_expense_List(int id, String name, double amount, Date date, String note, String location){
         this.id = id;
@@ -20,7 +21,7 @@ public class Edit_expense_List {
         this.amount = amount;
         this.date = date;
         this.note = note;
-        this.location =location;
+        this.location = location;
 
     }
 
@@ -62,5 +63,8 @@ public class Edit_expense_List {
         this.note = note;
     }
 
+    public String getLocation() {return location;}
+
+    public void setLocation(String location) {this.location = location;}
 
 }

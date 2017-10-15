@@ -54,7 +54,7 @@ public class AddNewExpense extends Fragment implements AdapterView.OnItemSelecte
 
         //shelanskey US4 - get new currency setting from database
         final String currencyType = dbHelper.getSetting("CURRENCY");
-        final String payment =dbHelper.getSetting("payment"); //pGhale: gets new payment setting from database
+        final String payment = dbHelper.getSetting("payment"); //pGhale: US11 gets new payment setting from database
 
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_single_choice, labels);
         listView.setAdapter(dataAdapter);
@@ -68,7 +68,7 @@ public class AddNewExpense extends Fragment implements AdapterView.OnItemSelecte
         editAmount = (EditText)view.findViewById(R.id.editAmount);
         editDate = (EditText)view.findViewById(R.id.editDate);
         editNote = (EditText)view.findViewById(R.id.editNote);
-        editLocation = (EditText)view.findViewById(R.id.editLocation); //pGhale: finding editLocation plaintext by id
+        editLocation = (EditText)view.findViewById(R.id.editLocation); //pGhale: US10 finding editLocation plaintext by id
         btnCancel = (Button)view.findViewById(R.id.btnCancel);
         btnSave = (Button)view.findViewById(R.id.btnSave);
 
@@ -83,7 +83,9 @@ public class AddNewExpense extends Fragment implements AdapterView.OnItemSelecte
 
             String date = editDate.getText().toString();
             String note = editNote.getText().toString();
-            String location = editLocation.getText().toString(); //pGhale: getting value of editLocation to location
+
+            //pGhale: US10 -getting value of editLocation to location
+            String location = editLocation.getText().toString();
 
             //Shelanskey US8 - convert from text to Date object
             Date newDate = DateUtil.convertTextToDate(date);
@@ -92,7 +94,9 @@ public class AddNewExpense extends Fragment implements AdapterView.OnItemSelecte
             if (category_add.trim().length() > 0) {
                 DBHelper db = new DBHelper(getContext());
 
-                double chkValue = db.insertAdd_Expense(category_add,amount,newDate,note, currencyType, payment, location); //pGhale: adding location to the parameter of db.insertAdd_Expenses.
+                //pGhale: US10 adding location to the parameter of db.insertAdd_Expenses.
+                //shelanskey US9 Added budget check
+                double chkValue = db.insertAdd_Expense(category_add,amount,newDate,note, currencyType, payment, location);
                 if (chkValue < 0){
                     Toast.makeText(getContext(), "Exceeded Budget for " + category_add, Toast.LENGTH_SHORT).show();
                 }

@@ -56,8 +56,8 @@ public class TabHistory_Week_Adapter extends BaseAdapter{
         TextView txtAmount = (TextView)view.findViewById(R.id.tbhw_amount);
         TextView txtNote = (TextView)view.findViewById(R.id.tbhw_note);
         TextView txtCurrency = (TextView)view.findViewById(R.id.tbhw_currency); //pGhale: configures the textView for currency
-        TextView txtPayment = (TextView)view.findViewById(R.id.tbhw_paymenttype); //pGhale: configures the textview for payment type
-       TextView txtLocation = (TextView)view.findViewById(R.id.tbhw_location); //pGhale: configures the textview for location
+        TextView txtPayment = (TextView)view.findViewById(R.id.tbhw_paymenttype); //pGhale US11: configures the textview for payment type
+        TextView txtLocation = (TextView)view.findViewById(R.id.tbhw_location); //pGhale US10: configures the textview for location
 
         txtName.setText(listWeek.get(position).getName());
         DecimalFormat precision = new DecimalFormat("0.00");
@@ -67,8 +67,8 @@ public class TabHistory_Week_Adapter extends BaseAdapter{
         txtDate.setText(DateUtil.convertDateToText(listWeek.get(position).getDate()));
         txtNote.setText(listWeek.get(position).getNote());
         txtCurrency.setText(listWeek.get(position).getCurrency()); //pGhale: sets the currency text
-        txtPayment.setText(listWeek.get(position).getPayment()); //pGhale: sets the payment text
-        txtLocation.setText(listWeek.get(position).getLocation()); //pGhale:sets the location text
+        txtPayment.setText(listWeek.get(position).getPayment()); //pGhale US11: sets the payment text
+        txtLocation.setText(listWeek.get(position).getLocation()); //pGhale US10:sets the location text
 
         return view;
     }

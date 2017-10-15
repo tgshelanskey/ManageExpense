@@ -45,8 +45,8 @@ public class DBHelper extends SQLiteOpenHelper {
 
 
     public static final String EXPENSE_ADD_COLUMN_CURRENCY = "currency"; //PGhale US7: Added column for currency  Add_expense table
-    public static final String Expense_ADD_COLUMN_PAYMENT = "payment"; // PGhale :Added column for payment in Add_expense table
-    public static final String EXPENSE_ADD_COLUMN_LOCATION = "location"; //PGhale: Added column for location in Add_expense table
+    public static final String Expense_ADD_COLUMN_PAYMENT = "payment"; // PGhale  US11 :Added column for payment in Add_expense table
+    public static final String EXPENSE_ADD_COLUMN_LOCATION = "location"; //PGhale US10 : Added column for location in Add_expense table
 
     // Shelanskey US4 - add settings table
     public static final String SETTINGS_TABLE_NAME = "settings";
@@ -120,9 +120,9 @@ public class DBHelper extends SQLiteOpenHelper {
         //shelanskey US8 COnvert date to long
         values.put(EXPENSE_ADD_COLUMN_DATE, date.getTime());
         values.put(EXPENSE_ADD_COLUMN_NOTE, note);
-        values.put(Expense_ADD_COLUMN_PAYMENT, payment);//pGhale :  inserts payment data in payment column
+        values.put(Expense_ADD_COLUMN_PAYMENT, payment);//pGhale US11:  inserts payment data in payment column
         values.put(EXPENSE_ADD_COLUMN_CURRENCY, currency); //pGhale US7: It inserts currency data in currency column
-        values.put(EXPENSE_ADD_COLUMN_LOCATION, location); //pGhale: It inserts location data in currency column
+        values.put(EXPENSE_ADD_COLUMN_LOCATION, location); //pGhale US10: It inserts location data in currency column
         db.insert(EXPENSE_TABLE_ADD, null, values);
         db.close();
         //shelanskey us9 - chk to see if new expense pushed us over the threshhold
