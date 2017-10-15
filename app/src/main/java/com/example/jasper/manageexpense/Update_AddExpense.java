@@ -67,11 +67,10 @@ public class Update_AddExpense extends Activity{
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String name = listExpense.get(position).getName().toString();
 
-
-
                 double amount = listExpense.get(position).getAmount();
                 String date = listExpense.get(position).getDate().toString();
                 String note = listExpense.get(position).getNote().toString();
+
                 ids = listExpense.get(position).getId();
 
                 DecimalFormat precision = new DecimalFormat("0.00");
@@ -103,6 +102,8 @@ public class Update_AddExpense extends Activity{
         txtDate.setText(ItemDate);
         final TextView txtNote = (TextView)transferDialog.findViewById(R.id.transfer_txtNote);
         txtNote.setText(ItemNote);
+
+
         Button btnSave = (Button)transferDialog.findViewById(R.id.transfer_btnSave);
         Button btnCancel = (Button)transferDialog.findViewById(R.id.transfer_btnCancel);
 
@@ -117,9 +118,11 @@ public class Update_AddExpense extends Activity{
                 Date newDate = DateUtil.convertTextToDate(date);
                 String note = txtNote.getText().toString();
 
+
+
                 int idDelete = listExpense.get(id).getId();
 
-                db.updateCategoryAdd(idDelete, name, amount, newDate, note, "Dollar");
+               db.updateCategoryAdd(idDelete, name, amount, newDate, note, "Dollar");
 
                 Toast.makeText(Update_AddExpense.this, "Items Successfully transferred to "+name, Toast.LENGTH_SHORT).show();
                 transferDialog.dismiss();
@@ -181,6 +184,7 @@ public class Update_AddExpense extends Activity{
                 DBHelper db = new DBHelper(getApplicationContext());
                 String currencyType = db.getSetting("CURRENCY");
 
+
                 int ids = listExpense.get(id).getId();
                 adapter.notifyDataSetChanged();
 
@@ -191,6 +195,7 @@ public class Update_AddExpense extends Activity{
 
                 Date newDate = DateUtil.convertTextToDate(date);
                 String note = editNote.getText().toString();
+
                 editText.setText("");
                 editAmount.setText("");
                 editDate.setText("");

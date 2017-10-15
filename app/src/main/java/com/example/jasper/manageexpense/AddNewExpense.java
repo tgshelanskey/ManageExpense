@@ -32,8 +32,8 @@ import java.util.List;
 public class AddNewExpense extends Fragment implements AdapterView.OnItemSelectedListener{
     ListView listView;
     Button btnSave, btnCancel;
-    EditText editAmount, editDate, editNote;
-    //Spinner spinner_unit;
+    EditText editAmount, editDate, editNote, editLocation; // pGhale: declared editLocation for EditText
+
     Calendar calendar;
     private int year, month, day;
 
@@ -54,6 +54,7 @@ public class AddNewExpense extends Fragment implements AdapterView.OnItemSelecte
 
         //shelanskey US4 - get new currency setting from database
         final String currencyType = dbHelper.getSetting("CURRENCY");
+        final String payment =dbHelper.getSetting("payment"); //pGhale: gets new payment setting from database
 
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_single_choice, labels);
         listView.setAdapter(dataAdapter);
@@ -67,6 +68,7 @@ public class AddNewExpense extends Fragment implements AdapterView.OnItemSelecte
         editAmount = (EditText)view.findViewById(R.id.editAmount);
         editDate = (EditText)view.findViewById(R.id.editDate);
         editNote = (EditText)view.findViewById(R.id.editNote);
+        editLocation = (EditText)view.findViewById(R.id.editLocation); //pGhale: finding editLocation plaintext by id
         btnCancel = (Button)view.findViewById(R.id.btnCancel);
         btnSave = (Button)view.findViewById(R.id.btnSave);
 
@@ -81,6 +83,7 @@ public class AddNewExpense extends Fragment implements AdapterView.OnItemSelecte
 
             String date = editDate.getText().toString();
             String note = editNote.getText().toString();
+            String location = editLocation.getText().toString(); //pGhale: getting value of editLocation to location
 
             Date newDate = DateUtil.convertTextToDate(date);
 
@@ -88,7 +91,7 @@ public class AddNewExpense extends Fragment implements AdapterView.OnItemSelecte
             if (category_add.trim().length() > 0) {
                 DBHelper db = new DBHelper(getContext());
 
-                double chkValue = db.insertAdd_Expense(category_add,amount,newDate,note, currencyType);
+                double chkValue = db.insertAdd_Expense(category_add,amount,newDate,note, currencyType, payment, location); //pGhale: adding location to the parameter of db.insertAdd_Expenses.
                 if (chkValue < 0){
                     Toast.makeText(getContext(), "Exceeded Budget for " + category_add, Toast.LENGTH_SHORT).show();
                 }
@@ -111,6 +114,10 @@ public class AddNewExpense extends Fragment implements AdapterView.OnItemSelecte
                 InputMethodManager imm_note = (InputMethodManager)
                       getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm_note.hideSoftInputFromWindow(editNote.getWindowToken(), 0);
+
+                InputMethodManager imm_location = (InputMethodManager)     //pGhale
+                        getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm_note.hideSoftInputFromWindow(editLocation.getWindowToken(), 0);
 
             } else {
                 Toast.makeText(getContext(), "Please enter label name",

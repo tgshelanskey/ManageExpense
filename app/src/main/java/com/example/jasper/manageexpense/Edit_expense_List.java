@@ -12,13 +12,15 @@ public class Edit_expense_List {
     private double amount;
     private Date date;
     private String note;
+    private String location;
 
-    Edit_expense_List(int id, String name, double amount, Date date, String note){
+    Edit_expense_List(int id, String name, double amount, Date date, String note, String location){
         this.id = id;
         this.name = name;
         this.amount = amount;
         this.date = date;
         this.note = note;
+        this.location =location;
 
     }
 
@@ -59,4 +61,6 @@ public class Edit_expense_List {
     public void setNote(String note) {
         this.note = note;
     }
+
+
 }

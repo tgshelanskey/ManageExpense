@@ -24,6 +24,7 @@ public class Edit_expense_adapter extends BaseAdapter {
         this.context = context;
         this.lists = lists;
         this.currencyType = currencyType;
+
     }
 
     @Override
