@@ -84,10 +84,6 @@ public class Tab2 extends Activity implements AdapterView.OnItemSelectedListener
         spinnerCurrency.setSelection(preferredCurrency);
         loadListView();
 
-        spinnerpayment =(Spinner) findViewById(R.id.payment_spinner); // pghale: populates spinnerpayment object
-        spinnerpayment.setOnItemSelectedListener(this);
-        loadListView();
-
         calendar = Calendar.getInstance();
         year = calendar.get(Calendar.YEAR);
         month = calendar.get(Calendar.MONTH);
@@ -181,6 +177,7 @@ public class Tab2 extends Activity implements AdapterView.OnItemSelectedListener
                 Double amount = new Double(amount_add.getText().toString());
                 String date = date_add.getText().toString();
 
+                //Shelanskey US9 - convert text to Date object
                 Date newDate = DateUtil.convertTextToDate(date);
                 String notes = note.getText().toString();
                 //pGhale US6: getting the current selected currency
@@ -198,8 +195,10 @@ public class Tab2 extends Activity implements AdapterView.OnItemSelectedListener
                     DBHelper db = new DBHelper(getApplicationContext());
                     //pghale US6: adding currency column to the Add_Expense table
                     double chkValue = db.insertAdd_Expense(category_add, amount, newDate, notes, currency, payment,locations);//pghale: adding currency, location and payment columns to the Add_Expense table
+                    //shelanskey US9 - added check for budget, display alertDialog if budget is exceeded
                     if (chkValue < 0){
-                        Toast.makeText(getApplicationContext(), "Exceeded Budget for " + category_add, Toast.LENGTH_SHORT).show();
+                        showAlertDialog(category_add, chkValue);
+                        //Toast.makeText(getApplicationContext(), "Exceeded Budget for " + category_add, Toast.LENGTH_SHORT).show();
                     }
                     List<Edit_expense_List> a = db.getAllExpenses();
 
@@ -301,6 +300,22 @@ public class Tab2 extends Activity implements AdapterView.OnItemSelectedListener
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
         Toast.makeText(parent.getContext(), "Please select category", Toast.LENGTH_LONG).show();
+    }
+
+    //Shelanskey US9 - method to display the alert dialog
+    private void showAlertDialog(String category, double overage) {
+        AlertDialog alertDialog = new AlertDialog.Builder(Tab2.this).create();
+        alertDialog.setTitle("Budget Alert");
+        alertDialog.setMessage("You have spent $" + Math.abs(overage) + "\nmore than allowed for " + category + ".");
+        alertDialog.setIcon(R.drawable.alert);
+
+        alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                Toast.makeText(getApplicationContext(), "You clicked on OK", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        alertDialog.show();
     }
 }
 

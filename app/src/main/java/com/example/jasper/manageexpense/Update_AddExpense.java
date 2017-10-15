@@ -115,6 +115,7 @@ public class Update_AddExpense extends Activity{
                 Double amount = new Double(txtAmount.getText().toString());
                 String date = txtDate.getText().toString();
 
+                //shelanskey US8 - convert text to date object
                 Date newDate = DateUtil.convertTextToDate(date);
                 String note = txtNote.getText().toString();
 
@@ -193,6 +194,7 @@ public class Update_AddExpense extends Activity{
                 Double amount = new Double(editAmount.getText().toString());
                 String date = editDate.getText().toString();
 
+                //shelanskey US8 - convert text to date object
                 Date newDate = DateUtil.convertTextToDate(date);
                 String note = editNote.getText().toString();
 

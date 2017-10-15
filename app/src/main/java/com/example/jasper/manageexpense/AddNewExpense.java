@@ -85,6 +85,7 @@ public class AddNewExpense extends Fragment implements AdapterView.OnItemSelecte
             String note = editNote.getText().toString();
             String location = editLocation.getText().toString(); //pGhale: getting value of editLocation to location
 
+            //Shelanskey US8 - convert from text to Date object
             Date newDate = DateUtil.convertTextToDate(date);
 
 
