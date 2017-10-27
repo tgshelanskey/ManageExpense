@@ -15,6 +15,10 @@
             android:icon="@mipmap/pie"
             android:title="Budget" />
         <item
+            android:id="@+id/MonthlyBudget"
+            android:icon="@mipmap/pie"
+            android:title="MonthlyBudget" />
+        <item
             android:id="@+id/Distribution"
             android:icon="@mipmap/dis"
             android:title="Distribution" />

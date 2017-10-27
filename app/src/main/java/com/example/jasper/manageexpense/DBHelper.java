@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Jasper on 2/24/2017.
@@ -480,5 +481,37 @@ public class DBHelper extends SQLiteOpenHelper {
         budgetAmount = getBudgetAmount(category);
         overageAmount = budgetAmount - expenseAmount;
         return overageAmount;
+}
+
+    //shlelanskey US12 Method to generate monthly expense report
+    public List<Monthly_Budget_list> getMonthlyHistory() {
+
+        Map<String, Tab1_ListView> catMap = new HashMap<String,Tab1_ListView>();
+        List<Tab1_ListView> categories = getCategoryName();
+        for (Tab1_ListView cat: categories){
+            catMap.put(cat.getName(), cat);
+        }
+
+        Monthly_Budget_list budget = null;
+        long firstOfMonth = DateUtil.getFirstDayOfMonth().getTime();
+        List<Monthly_Budget_list> budgetList = new ArrayList<Monthly_Budget_list>();
+        hp = new HashMap();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT category_add, SUM(amount) AS total FROM Add_Expense where date > " + firstOfMonth +
+               " GROUP BY category_add", null);
+        cursor.moveToFirst();
+
+        while (!cursor.isAfterLast()) {
+            String cat_id = cursor.getString(0);
+            //String catName = catMap.get(cat_id).getName();
+            double budgetValue= catMap.get(cat_id).getBudget();
+            budget = new Monthly_Budget_list(cat_id, cursor.getInt(1), budgetValue);
+            budgetList.add(budget);
+            cursor.moveToNext();
+        }
+
+        cursor.close();
+        db.close();
+        return budgetList;
     }
 }

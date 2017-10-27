@@ -139,6 +139,12 @@ public class MainActivity extends AppCompatActivity
             android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
             fragmentTransaction.replace(R.id.frame, fragment, "Graphs");
             fragmentTransaction.commit();
+        } else if (id == R.id.MonthlyBudget) {
+            setTitle("MonthlyBudget");
+            MonthlyBudget fragment = new MonthlyBudget();
+            android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.replace(R.id.frame, fragment, "MonthlyBudget");
+            fragmentTransaction.commit();
         }else if (id == R.id.Distribution) {
             setTitle("Distribution");
             Distribution fragment = new Distribution();
