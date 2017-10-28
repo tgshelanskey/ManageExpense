@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import com.jjoe64.graphview.GraphView;
+import com.jjoe64.graphview.LegendRenderer;
 import com.jjoe64.graphview.ValueDependentColor;
 import com.jjoe64.graphview.helper.StaticLabelsFormatter;
 import com.jjoe64.graphview.series.BarGraphSeries;
@@ -33,39 +34,53 @@ public class MonthlyBudget extends Fragment {
         DBHelper db = new DBHelper(getContext());
         List<Monthly_Budget_list> budgetList = db.getMonthlyHistory();
         List<String> labels = new ArrayList<String>();
+        labels.add(" ");
 
         BarGraphSeries<DataPoint> series = new BarGraphSeries<>();
         BarGraphSeries<DataPoint> series2 = new BarGraphSeries<>();
-        int column = 0;
+        int column = 1;
         for (Monthly_Budget_list budget : budgetList){
             labels.add(budget.getCategory());
-            //labels.add(budget.getCategory() + "Max");
+
             DataPoint point = new DataPoint(column, budget.getAmountSpent());
             DataPoint point2 = new DataPoint(column, budget.getBudgetAmount());
-            series.appendData(point,true,budgetList.size()*2);
-            series2.appendData(point2,true,budgetList.size()*2);
+            series.appendData(point,true,budgetList.size());
+            series2.appendData(point2,true,budgetList.size());
 
             column++;
         }
-        series.setSpacing(50);
-        series2.setSpacing(50);
+        series.setSpacing(10);
+        series.setDrawValuesOnTop(true);
+        series.setValuesOnTopColor(Color.RED);
+        series2.setSpacing(10);
+        series2.setDrawValuesOnTop(true);
+        series2.setValuesOnTopColor(Color.BLUE);
         graph.addSeries(series);
         graph.addSeries(series2);
 
         StaticLabelsFormatter formatter = new StaticLabelsFormatter(graph);
         String stringLabel[] = labels.toArray(new String[labels.size()]);
         formatter.setHorizontalLabels(stringLabel);
+
+        graph.getGridLabelRenderer().setNumHorizontalLabels(labels.size()*2);
+        graph.getGridLabelRenderer().setHorizontalLabelsAngle(90);
+
         graph.getGridLabelRenderer().setLabelFormatter(formatter);
-        series.setValueDependentColor(new ValueDependentColor<DataPoint>() {
-            @Override
-           public int get(DataPoint data) {
-                return Color.rgb((int) data.getX() * 255 / 4, (int) Math.abs(data.getY() * 255 / 6), 100);
-            }
-        });
-        //graph.getViewport().setScrollable(true); // enables horizontal scrolling
-        //graph.getViewport().setScrollableY(true); // enables vertical scrolling
-        //graph.getViewport().setScalable(true); // enables horizontal zooming and scrolling
-        //graph.getViewport().setScalableY(true); // enables vertical zooming and scrolling
+
+        series.setColor(Color.BLUE);
+        series2.setColor(Color.RED);
+
+        graph.getViewport().setXAxisBoundsManual(true);
+        graph.getViewport().setMinX(0);
+        graph.getViewport().setMaxX(budgetList.size()+2);
+
+
+        series.setTitle("Spent");
+        series2.setTitle("Budget");
+        graph.setTitle("Expenses vs Budget");
+        graph.getLegendRenderer().setVisible(true);
+        graph.getLegendRenderer().setAlign(LegendRenderer.LegendAlign.TOP);
+
         return view;
     }
 }
