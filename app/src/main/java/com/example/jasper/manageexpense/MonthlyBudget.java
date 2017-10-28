@@ -70,7 +70,7 @@ public class MonthlyBudget extends Fragment {
 
         graph.getGridLabelRenderer().setLabelFormatter(formatter);
         graph.getGridLabelRenderer().setNumHorizontalLabels((labels.size()));
-        graph.getGridLabelRenderer().setHorizontalLabelsAngle(90);
+        graph.getGridLabelRenderer().setHorizontalLabelsAngle(30);
 
 
         series.setColor(Color.BLUE);
