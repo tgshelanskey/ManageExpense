@@ -49,6 +49,7 @@ public class MonthlyBudget extends Fragment {
 
             column++;
         }
+        labels.add(" ");
         series.setSpacing(10);
         series.setDrawValuesOnTop(true);
         series.setValuesOnTopColor(Color.RED);
@@ -62,17 +63,19 @@ public class MonthlyBudget extends Fragment {
         String stringLabel[] = labels.toArray(new String[labels.size()]);
         formatter.setHorizontalLabels(stringLabel);
 
-        graph.getGridLabelRenderer().setNumHorizontalLabels(labels.size()*2);
-        graph.getGridLabelRenderer().setHorizontalLabelsAngle(90);
+        graph.getViewport().setXAxisBoundsManual(true);
+        graph.getViewport().setMinX(0);
+        graph.getViewport().setMaxX(column);
+
 
         graph.getGridLabelRenderer().setLabelFormatter(formatter);
+        graph.getGridLabelRenderer().setNumHorizontalLabels((labels.size()));
+        graph.getGridLabelRenderer().setHorizontalLabelsAngle(90);
+
 
         series.setColor(Color.BLUE);
         series2.setColor(Color.RED);
 
-        graph.getViewport().setXAxisBoundsManual(true);
-        graph.getViewport().setMinX(0);
-        graph.getViewport().setMaxX(budgetList.size()+2);
 
 
         series.setTitle("Spent");
