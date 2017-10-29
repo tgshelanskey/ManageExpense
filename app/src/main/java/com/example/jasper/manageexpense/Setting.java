@@ -47,6 +47,7 @@ public class Setting extends Activity implements AdapterView.OnItemSelectedListe
         Button btnBack = (Button)findViewById(R.id.btn_settings_back);
         Button editExpense = (Button)findViewById(R.id.btn_settings_editExp);
         Button addCategory = (Button)findViewById(R.id.btn_settings_addCat);
+        Button createReport = (Button)findViewById(R.id.btn_report); //pghale: initializing the button object createReport
         relativeLayout = (RelativeLayout) findViewById(R.id.content_main);
         //final EditText editText = (EditText)findViewById(R.id.editText_settings);
 
@@ -72,6 +73,15 @@ public class Setting extends Activity implements AdapterView.OnItemSelectedListe
                 startActivity(i);
             }
         });
+        //PGhale: setting onclickListener for the createReport button
+        createReport.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getApplicationContext(),CreateReport.class);
+                startActivity(i);
+            }
+        });
+
 
         //pGhale US6: getting the current selected currency
         String currency = spinnerCurrency.getSelectedItem().toString(); //pGhale : getting the current selected currency

@@ -18,6 +18,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.text.SimpleDateFormat;
 
 /**
  * Created by Jasper on 2/24/2017.
@@ -295,6 +296,8 @@ public class DBHelper extends SQLiteOpenHelper {
         return sampleList;
     }
 
+
+
     public List<Graph_all_List> getPieGrapgListView() {
         Graph_all_List overList = null;
 
@@ -352,6 +355,32 @@ public class DBHelper extends SQLiteOpenHelper {
         cursor.close();
         db.close();
         return listArrayList;
+    }
+
+    public String getReportData() {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.rawQuery("SELECT *  FROM Add_Expense ", null);
+        cursor.moveToFirst();
+
+        String details = "";
+        while (!cursor.isAfterLast()) {
+            SimpleDateFormat readDate = new SimpleDateFormat( "MM/dd/yyyy");
+            Date date = new Date(cursor.getLong(cursor.getColumnIndexOrThrow("date")));
+
+           details += "On " + readDate.format(date) + ", " + " $" + cursor.getDouble(2)
+                   + " is spend for " + cursor.getString(1) + " in " + cursor.getString(7) +","
+                   +  " which is paid by " + cursor.getString(6) + "."+"\n" + "Note : " + cursor.getString(4) + "\n" + "\n";
+            cursor.moveToNext();
+        }
+        cursor = db.rawQuery("SELECT SUM(amount) as total_sum FROM Add_Expense", null);
+        cursor.moveToFirst();
+        details += "Total money spent : $" + cursor.getString(0);
+
+        cursor.close();
+        db.close();
+
+        return details;
     }
 
     public List<Edit_expense_List> getAllExpenses() {
