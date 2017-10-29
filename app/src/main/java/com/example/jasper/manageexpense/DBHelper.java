@@ -356,7 +356,7 @@ public class DBHelper extends SQLiteOpenHelper {
         db.close();
         return listArrayList;
     }
-
+    //pghale: this method will read the database and gets the appropriate column to show in the report.
     public String getReportData() {
         SQLiteDatabase db = this.getReadableDatabase();
 
@@ -369,13 +369,13 @@ public class DBHelper extends SQLiteOpenHelper {
             Date date = new Date(cursor.getLong(cursor.getColumnIndexOrThrow("date")));
 
            details += "On " + readDate.format(date) + ", " + " $" + cursor.getDouble(2)
-                   + " is spend for " + cursor.getString(1) + " in " + cursor.getString(7) +","
+                   + " is spent for " + cursor.getString(1) + " in " + cursor.getString(7) +","
                    +  " which is paid by " + cursor.getString(6) + "."+"\n" + "Note : " + cursor.getString(4) + "\n" + "\n";
             cursor.moveToNext();
         }
-        cursor = db.rawQuery("SELECT SUM(amount) as total_sum FROM Add_Expense", null);
+        cursor = db.rawQuery("SELECT SUM(amount)FROM Add_Expense", null); //pghale: this query will add the total sum of amount column.
         cursor.moveToFirst();
-        details += "Total money spent : $" + cursor.getString(0);
+        details += "Total money spent : $" + cursor.getString(0); // pghale: it will display the total money spent in the report
 
         cursor.close();
         db.close();

@@ -36,6 +36,7 @@ import org.w3c.dom.Text;
 
 import java.util.Date;
 
+//pGhale:
 public class CreateReport extends AppCompatActivity {
 
     @Override
@@ -44,11 +45,11 @@ public class CreateReport extends AppCompatActivity {
         setContentView(R.layout.activity_create_report);
 
 
-        DBHelper dbHelper = new DBHelper(this);
-        String detailFromMethod = dbHelper.getReportData();
+        DBHelper dbHelper = new DBHelper(this); //pGhale: instantiating dbhelper
+        String detailFromMethod = dbHelper.getReportData(); //calling the getReportData method of dbhelper.java and initializing it to a string detailFromMethod
 
         TextView t=(TextView)findViewById(R.id.reportText);
-        t.setText(detailFromMethod);
+        t.setText(detailFromMethod); //pGhale: setting the textview to display the data of detailfromMethod.
     }
 }
 
